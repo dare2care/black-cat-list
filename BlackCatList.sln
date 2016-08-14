@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackCatList.Web", "BlackCatList.Web\BlackCatList.Web.csproj", "{3C5C0585-8AAA-45B0-962F-D8E357815C7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackCatList.Tests", "BlackCatList.Tests\BlackCatList.Tests.csproj", "{5C6E47F3-9668-4009-94C5-ECEE221FC8B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B52CCD6-46EC-40FF-ABF0-F44B3A3C5E2C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C5C0585-8AAA-45B0-962F-D8E357815C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C5C0585-8AAA-45B0-962F-D8E357815C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C5C0585-8AAA-45B0-962F-D8E357815C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C5C0585-8AAA-45B0-962F-D8E357815C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C6E47F3-9668-4009-94C5-ECEE221FC8B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C6E47F3-9668-4009-94C5-ECEE221FC8B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C6E47F3-9668-4009-94C5-ECEE221FC8B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C6E47F3-9668-4009-94C5-ECEE221FC8B4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
