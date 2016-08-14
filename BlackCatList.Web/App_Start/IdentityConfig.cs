@@ -50,7 +50,9 @@ namespace BlackCatList.Web
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var dbContext = context.Get<ApplicationDbContext>();
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(dbContext));
+
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
@@ -71,7 +73,7 @@ namespace BlackCatList.Web
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
-            // You can write your own provider and plug it in here.
+            // Configure email two-factor provider
             manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
             {
                 Subject = "Security Code",
@@ -79,6 +81,7 @@ namespace BlackCatList.Web
             });
             manager.EmailService = new EmailService();
 
+            // Configure data protection provider
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
@@ -86,11 +89,23 @@ namespace BlackCatList.Web
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
 
+            // Add default application roles
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbContext));
+            AddDefaultRole(roleManager, "Administrator");
+            AddDefaultRole(roleManager, "Moderator");
+
             return manager;
+        }
+
+        private static void AddDefaultRole(RoleManager<IdentityRole> roleManager, string roleName)
+        {
+            if (!roleManager.RoleExists(roleName))
+            {
+                roleManager.Create(new IdentityRole(roleName));
+            }
         }
     }
 
-    // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
