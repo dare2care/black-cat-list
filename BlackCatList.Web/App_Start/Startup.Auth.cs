@@ -37,24 +37,15 @@ namespace BlackCatList.Web
             app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            app.UseFacebookAuthentication(
+               appId: Environment.GetEnvironmentVariable("BlackCatList.Auth.Facebook.AppID"),
+               appSecret: Environment.GetEnvironmentVariable("BlackCatList.Auth.Facebook.AppSecret"));
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
-
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
-
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = Environment.GetEnvironmentVariable("BlackCatList.Auth.Google.ClientID"),
+                ClientSecret = Environment.GetEnvironmentVariable("BlackCatList.Auth.Google.ClientSecret")
+            });
         }
     }
 }
