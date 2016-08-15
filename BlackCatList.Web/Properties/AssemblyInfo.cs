@@ -1,6 +1,6 @@
-﻿using Microsoft.Owin;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using Microsoft.Owin;
 
 [assembly: AssemblyTitle("BlackCatList.Web")]
 [assembly: AssemblyCompany("Dare 2 Care Animals")]

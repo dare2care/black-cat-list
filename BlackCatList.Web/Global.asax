@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="BlackCatList.Web.MvcApplication" Language="C#" %>
+﻿<%@ Application Codebehind="MvcApplication.cs" Inherits="BlackCatList.Web.MvcApplication" Language="C#" %>

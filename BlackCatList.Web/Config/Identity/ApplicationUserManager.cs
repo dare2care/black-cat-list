@@ -1,46 +1,14 @@
-﻿using System;
-using System.Net;
-using System.Net.Mail;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using BlackCatList.Web.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
-
-namespace BlackCatList.Web
+﻿namespace BlackCatList.Web
 {
-    public class EmailService : IIdentityMessageService
-    {
-        public async Task SendAsync(IdentityMessage message)
-        {
-            await ConfigSendGridAsync(message);
-        }
+    using System;
+    using BlackCatList.Web.Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Owin;
 
-        private async Task ConfigSendGridAsync(IdentityMessage message)
-        {
-            using (var mailMessage = new MailMessage())
-            {
-                mailMessage.To.Add(message.Destination);
-                mailMessage.Subject = message.Subject;
-                mailMessage.Body = message.Body;
-                mailMessage.IsBodyHtml = true;
-
-                using (var smtpClient = new SmtpClient())
-                {
-                    smtpClient.Credentials = new NetworkCredential(
-                        Environment.GetEnvironmentVariable("BlackCatList.Smtp.Username"),
-                        Environment.GetEnvironmentVariable("BlackCatList.Smtp.Password"));
-
-                    await smtpClient.SendMailAsync(mailMessage);
-                }
-            }
-        }
-    }
-
-    // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
+    // Configure the application user manager used in this application.
+    // UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
@@ -74,11 +42,12 @@ namespace BlackCatList.Web
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
             // Configure email two-factor provider
-            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
+            var emailTokenProvider = new EmailTokenProvider<ApplicationUser>
             {
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
-            });
+            };
+            manager.RegisterTwoFactorProvider("Email Code", emailTokenProvider);
             manager.EmailService = new EmailService();
 
             // Configure data protection provider
@@ -103,24 +72,6 @@ namespace BlackCatList.Web
             {
                 roleManager.Create(new IdentityRole(roleName));
             }
-        }
-    }
-
-    public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
-    {
-        public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
-            : base(userManager, authenticationManager)
-        {
-        }
-
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
-        {
-            return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
-        }
-
-        public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
-        {
-            return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
 }

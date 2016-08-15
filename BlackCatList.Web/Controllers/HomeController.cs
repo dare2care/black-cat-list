@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace BlackCatList.Web.Controllers
+﻿namespace BlackCatList.Web.Controllers
 {
+    using System.Web.Mvc;
+
     [RequireHttps]
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult About()
         {
-            return View();
+            return this.View();
         }
     }
 }

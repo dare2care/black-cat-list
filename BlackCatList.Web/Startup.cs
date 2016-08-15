@@ -1,12 +1,12 @@
-﻿using Owin;
-
-namespace BlackCatList.Web
+﻿namespace BlackCatList.Web
 {
+    using Owin;
+
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            this.ConfigureAuth(app);
         }
     }
 }

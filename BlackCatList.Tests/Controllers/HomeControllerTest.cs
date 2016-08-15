@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BlackCatList.Web;
-using BlackCatList.Web.Controllers;
-
-namespace BlackCatList.Tests.Controllers
+﻿namespace BlackCatList.Tests.Controllers
 {
+    using System.Web.Mvc;
+    using BlackCatList.Web.Controllers;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class HomeControllerTest
     {

@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using BlackCatList.Web.Models;
-using Microsoft.AspNet.Identity.Owin;
-
-namespace BlackCatList.Web.Controllers
+﻿namespace BlackCatList.Web.Controllers
 {
+    using System.Data;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Net;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Mvc;
+    using BlackCatList.Web.Models;
+    using Microsoft.AspNet.Identity.Owin;
+
     [Authorize(Roles = "Administrator")]
     public class UsersController : Controller
     {
-        private ApplicationUserManager _userManager;
+        private ApplicationUserManager userManager;
 
         public UsersController()
         {
@@ -23,25 +21,26 @@ namespace BlackCatList.Web.Controllers
 
         public UsersController(ApplicationUserManager userManager)
         {
-            UserManager = userManager;
+            this.UserManager = userManager;
         }
 
         public ApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return this.userManager ?? this.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
+
             private set
             {
-                _userManager = value;
+                this.userManager = value;
             }
         }
 
         // GET: Users
         public async Task<ActionResult> Index(UserListViewModel model)
         {
-            var users = UserManager.Users.Select(x => new UserListViewModel
+            var users = this.UserManager.Users.Select(x => new UserListViewModel
             {
                 Id = x.Id,
                 Email = x.Email
@@ -52,7 +51,7 @@ namespace BlackCatList.Web.Controllers
                 users = users.Where(x => x.Email.Contains(model.Email));
             }
 
-            return View(await users.ToListAsync());
+            return this.View(await users.ToListAsync());
         }
 
         // GET: Users/ManageRoles/5
@@ -63,17 +62,17 @@ namespace BlackCatList.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var user = await UserManager.FindByIdAsync(id);
+            var user = await this.UserManager.FindByIdAsync(id);
             if (user == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
 
-            return View(new ManageRolesViewModel
+            return this.View(new ManageRolesViewModel
             {
                 Id = user.Id,
                 Email = user.Email,
-                IsModerator = await UserManager.IsInRoleAsync(id, "Moderator")
+                IsModerator = await this.UserManager.IsInRoleAsync(id, "Moderator")
             });
         }
 
@@ -82,28 +81,29 @@ namespace BlackCatList.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ManageRoles(ManageRolesViewModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 if (model.IsModerator)
                 {
-                    await UserManager.AddToRoleAsync(model.Id, "Moderator");
+                    await this.UserManager.AddToRoleAsync(model.Id, "Moderator");
                 }
                 else
                 {
-                    await UserManager.RemoveFromRoleAsync(model.Id, "Moderator");
+                    await this.UserManager.RemoveFromRoleAsync(model.Id, "Moderator");
                 }
 
-                return RedirectToAction("Index");
+                return this.RedirectToAction(nameof(this.Index));
             }
-            return View(model);
+
+            return this.View(model);
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && _userManager != null)
+            if (disposing && this.userManager != null)
             {
-                _userManager.Dispose();
-                _userManager = null;
+                this.userManager.Dispose();
+                this.userManager = null;
             }
 
             base.Dispose(disposing);
