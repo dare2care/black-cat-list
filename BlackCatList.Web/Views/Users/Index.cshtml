@@ -1,26 +1,21 @@
 ﻿@model IEnumerable<BlackCatList.Web.Models.UserListViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Users";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
-<form class="form-horizontal" role="form" method="get">
-    <div class="form-group">
-        <label class="col-sm-2 control-label" for="Email">Email</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="Email" name="Email" placeholder="Email">
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Search</button>
-        </div>
+<form class="form-inline" role="form">
+    <div class="input-group">
+        <input type="text" name="Email" class="form-control" placeholder="Enter email" />
+        <span class="input-group-btn">
+            <button class="btn btn-default">Search</button>
+        </span>
     </div>
 </form>
 
-<table class="table">
+<table class="table table-striped table-bordered">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Email)
@@ -28,13 +23,14 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.ActionLink("Manage Roles", "ManageRoles", new { id=item.Id })
+            @Html.ActionLink("Manage Roles", "ManageRoles", new { id = item.Id })
         </td>
     </tr>
 }
