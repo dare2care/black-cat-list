@@ -39,13 +39,20 @@ namespace BlackCatList.Web.Controllers
         }
 
         // GET: Users
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(UserListViewModel model)
         {
-            return View(await UserManager.Users.Select(x => new UserListViewModel
+            var users = UserManager.Users.Select(x => new UserListViewModel
             {
                 Id = x.Id,
                 Email = x.Email
-            }).ToListAsync());
+            });
+
+            if (model.Email != null)
+            {
+                users = users.Where(x => x.Email.Contains(model.Email));
+            }
+
+            return View(await users.ToListAsync());
         }
 
         // GET: Users/ManageRoles/5
