@@ -1,6 +1,10 @@
 ﻿[
   {
-    "outputFile": "Content/bootstrap.css",
+    "outputFile": "Content/bootstrap/bootstrap.css",
     "inputFile": "Content/bootstrap/bootstrap.less"
+  },
+  {
+    "outputFile": "Content/layout.css",
+    "inputFile": "Content/layout.less"
   }
 ]
