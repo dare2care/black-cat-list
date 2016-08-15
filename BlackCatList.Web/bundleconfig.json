@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "Content/layout.bundle.css",
+    "minify": {
+      "enabled": true,
+      "commentMode": "none"
+      
+    },
+    "inputFiles": [
+      "Content/bootstrap/bootstrap.css",
+      "Content/layout.css"
+    ]
+  }
+]
