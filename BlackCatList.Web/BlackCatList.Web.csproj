@@ -258,12 +258,20 @@
     <None Include="Content\bootstrap\bootstrap.less" />
     <None Include="Content\bootstrap\badges.less" />
     <None Include="Content\bootstrap\alerts.less" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\jquery-1.12.4.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\respond.js" />
+    <None Include="Scripts\bootstrap.js" />
+    <None Include="Scripts\jquery-1.12.4.js" />
+    <None Include="Scripts\jquery.validate.js" />
+    <None Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\layout.bundle.js" />
+    <Content Include="Scripts\layout.bundle.min.js">
+      <DependentUpon>layout.bundle.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\modernizr-2.8.3.js" />
+    <None Include="Scripts\respond.js" />
+    <Content Include="Scripts\validate.bundle.js" />
+    <Content Include="Scripts\validate.bundle.min.js">
+      <DependentUpon>validate.bundle.js</DependentUpon>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

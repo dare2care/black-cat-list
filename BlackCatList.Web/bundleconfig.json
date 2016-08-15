@@ -1,14 +1,37 @@
 [
   {
     "outputFileName": "Content/layout.bundle.css",
-    "minify": {
-      "enabled": true,
-      "commentMode": "none"
-      
-    },
     "inputFiles": [
       "Content/bootstrap/bootstrap.css",
       "Content/layout.css"
-    ]
+    ],
+    "minify": {
+      "enabled": true,
+      "commentMode": "none"
+    }
+  },
+  {
+    "outputFileName": "Scripts/layout.bundle.js",
+    "inputFiles": [
+      "Scripts/modernizr-2.8.3.js",
+      "Scripts/respond.js",
+      "Scripts/jquery-1.12.4.js",
+      "Scripts/bootstrap.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "preserveImportantComments": false
+    }
+  },
+  {
+    "outputFileName": "Scripts/validate.bundle.js",
+    "inputFiles": [
+      "Scripts/jquery.validate.js",
+      "Scripts/jquery.validate.unobtrusive.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "preserveImportantComments": false
+    }
   }
 ]
