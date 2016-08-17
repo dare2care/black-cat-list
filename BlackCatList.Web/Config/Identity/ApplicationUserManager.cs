@@ -9,9 +9,9 @@
 
     // Configure the application user manager used in this application.
     // UserManager is defined in ASP.NET Identity and is used by the application.
-    public class ApplicationUserManager : UserManager<ApplicationUser>
+    public class ApplicationUserManager : UserManager<User>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store)
+        public ApplicationUserManager(IUserStore<User> store)
             : base(store)
         {
         }
@@ -19,10 +19,10 @@
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var dbContext = context.Get<ApplicationDbContext>();
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(dbContext));
+            var manager = new ApplicationUserManager(new UserStore<User>(dbContext));
 
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            manager.UserValidator = new UserValidator<User>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -42,7 +42,7 @@
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
             // Configure email two-factor provider
-            var emailTokenProvider = new EmailTokenProvider<ApplicationUser>
+            var emailTokenProvider = new EmailTokenProvider<User>
             {
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
@@ -55,7 +55,7 @@
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider =
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                    new DataProtectorTokenProvider<User>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
 
             // Add default application roles

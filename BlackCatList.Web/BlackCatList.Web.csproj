@@ -152,6 +152,8 @@
     <Compile Include="Config\Identity\ApplicationSignInManager.cs" />
     <Compile Include="Config\Identity\ApplicationUserManager.cs" />
     <Compile Include="Config\Identity\EmailService.cs" />
+    <Compile Include="Contracts\IAddressEntity.cs" />
+    <Compile Include="Contracts\IIdentityEntity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -166,13 +168,24 @@
     <Compile Include="Models\Account\SendCodeViewModel.cs" />
     <Compile Include="Models\Account\VerifyCodeViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
-    <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Entities\Address.cs" />
+    <Compile Include="Models\Entities\Country.cs" />
+    <Compile Include="Models\Entities\Image.cs" />
+    <Compile Include="Contracts\IMetadataEntity.cs" />
+    <Compile Include="Models\Entities\District.cs" />
+    <Compile Include="Models\Entities\Organization.cs" />
+    <Compile Include="Models\Entities\Street.cs" />
+    <Compile Include="Models\Extensions\IdentityExtensions.cs" />
     <Compile Include="Models\Manage\ChangePasswordViewModel.cs" />
     <Compile Include="Models\Manage\ConfigureTwoFactorViewModel.cs" />
     <Compile Include="Models\Manage\FactorViewModel.cs" />
     <Compile Include="Models\Manage\IndexViewModel.cs" />
     <Compile Include="Models\Manage\ManageLoginsViewModel.cs" />
     <Compile Include="Models\Manage\SetPasswordViewModel.cs" />
+    <Compile Include="Models\Entities\Metadata.cs" />
+    <Compile Include="Models\Entities\Person.cs" />
+    <Compile Include="Models\Entities\Town.cs" />
+    <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\Users\ManageRolesViewModel.cs" />
     <Compile Include="Models\Users\UserListViewModel.cs" />
     <Compile Include="MvcApplication.cs">
@@ -280,6 +293,7 @@
     <None Include="Scripts\jquery-1.12.4.js" />
     <None Include="Scripts\jquery.validate.js" />
     <None Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.extensions.js" />
     <Content Include="Scripts\layout.bundle.js" />
     <Content Include="Scripts\layout.bundle.min.js">
       <DependentUpon>layout.bundle.js</DependentUpon>

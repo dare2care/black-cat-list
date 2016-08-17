@@ -27,7 +27,8 @@
     "outputFileName": "Scripts/validate.bundle.js",
     "inputFiles": [
       "Scripts/jquery.validate.js",
-      "Scripts/jquery.validate.unobtrusive.js"
+      "Scripts/jquery.validate.unobtrusive.js",
+      "Scripts/jquery.validate.extensions.js"
     ],
     "minify": {
       "enabled": true,
