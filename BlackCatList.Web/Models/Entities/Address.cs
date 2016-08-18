@@ -7,7 +7,6 @@
     public class Address
     {
         [Index]
-        [ForeignKey(nameof(Street))]
         public int? StreetId { get; set; }
 
         [Range(0, int.MaxValue)]
