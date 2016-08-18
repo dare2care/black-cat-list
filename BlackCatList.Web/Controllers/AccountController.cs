@@ -2,7 +2,6 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Mvc;
     using BlackCatList.Web.Models;
     using Microsoft.AspNet.Identity;
@@ -12,55 +11,21 @@
     [Authorize]
     public class AccountController : Controller
     {
-        // Used for XSRF protection when adding external logins
-        private const string XsrfKey = "XsrfId";
-
-        private ApplicationSignInManager signInManager;
-        private ApplicationUserManager userManager;
-
-        public AccountController()
-        {
-        }
-
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public AccountController(
+            ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager,
+            IAuthenticationManager authenticationManager)
         {
             this.UserManager = userManager;
             this.SignInManager = signInManager;
+            this.AuthenticationManager = authenticationManager;
         }
 
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return this.signInManager ?? this.HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
+        private ApplicationUserManager UserManager { get; }
 
-            private set
-            {
-                this.signInManager = value;
-            }
-        }
+        private ApplicationSignInManager SignInManager { get; }
 
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return this.userManager ?? this.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-
-            private set
-            {
-                this.userManager = value;
-            }
-        }
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return this.HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager { get; }
 
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
@@ -82,7 +47,10 @@
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, this.Url.Action(nameof(this.ExternalLoginCallback), "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(
+                provider,
+                this.Url.Action(nameof(this.ExternalLoginCallback), "Account", new { ReturnUrl = returnUrl }),
+                this.AuthenticationManager);
         }
 
         // GET: /Account/ExternalLoginCallback
@@ -414,26 +382,6 @@
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (this.userManager != null)
-                {
-                    this.userManager.Dispose();
-                    this.userManager = null;
-                }
-
-                if (this.signInManager != null)
-                {
-                    this.signInManager.Dispose();
-                    this.signInManager = null;
-                }
-            }
-
-            base.Dispose(disposing);
-        }
-
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -467,38 +415,6 @@
                $@"Please confirm your account by clicking <a href=""{callbackUrl}"">here</a>");
 
             return callbackUrl;
-        }
-
-        internal class ChallengeResult : HttpUnauthorizedResult
-        {
-            public ChallengeResult(string provider, string redirectUri)
-                : this(provider, redirectUri, null)
-            {
-            }
-
-            public ChallengeResult(string provider, string redirectUri, string userId)
-            {
-                this.LoginProvider = provider;
-                this.RedirectUri = redirectUri;
-                this.UserId = userId;
-            }
-
-            public string LoginProvider { get; set; }
-
-            public string RedirectUri { get; set; }
-
-            public string UserId { get; set; }
-
-            public override void ExecuteResult(ControllerContext context)
-            {
-                var properties = new AuthenticationProperties { RedirectUri = this.RedirectUri };
-                if (this.UserId != null)
-                {
-                    properties.Dictionary[XsrfKey] = this.UserId;
-                }
-
-                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, this.LoginProvider);
-            }
         }
     }
 }

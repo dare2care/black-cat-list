@@ -2,11 +2,9 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Mvc;
     using BlackCatList.Web.Models;
     using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
 
     [Authorize]
@@ -15,61 +13,21 @@
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private ApplicationSignInManager signInManager;
-        private ApplicationUserManager userManager;
-
-        public ManageController()
-        {
-        }
-
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ManageController(
+            ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager,
+            IAuthenticationManager authenticationManager)
         {
             this.UserManager = userManager;
             this.SignInManager = signInManager;
+            this.AuthenticationManager = authenticationManager;
         }
 
-        public enum ManageMessageId
-        {
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            Error
-        }
+        private ApplicationUserManager UserManager { get; }
 
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return this.signInManager ?? this.HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
+        private ApplicationSignInManager SignInManager { get; }
 
-            private set
-            {
-                this.signInManager = value;
-            }
-        }
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return this.userManager ?? this.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-
-            private set
-            {
-                this.userManager = value;
-            }
-        }
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return this.HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager { get; }
 
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
@@ -160,7 +118,11 @@
         public ActionResult LinkLogin(string provider)
         {
             // Request a redirect to the external login provider to link a login for the current user
-            return new AccountController.ChallengeResult(provider, this.Url.Action(nameof(this.LinkLoginCallback), "Manage"), this.User.Identity.GetUserId());
+            return new ChallengeResult(
+                provider,
+                this.Url.Action(nameof(this.LinkLoginCallback), "Manage"),
+                this.User.Identity.GetUserId(),
+                this.AuthenticationManager);
         }
 
         // GET: /Manage/LinkLoginCallback
@@ -254,24 +216,6 @@
 
             // If we got this far, something failed, redisplay form
             return this.View(model);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (this.userManager != null)
-                {
-                    this.userManager.Dispose();
-                }
-
-                if (this.signInManager != null)
-                {
-                    this.signInManager.Dispose();
-                }
-            }
-
-            base.Dispose(disposing);
         }
 
         private void AddErrors(IdentityResult result)

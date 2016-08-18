@@ -5,37 +5,18 @@
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Mvc;
     using BlackCatList.Web.Models;
-    using Microsoft.AspNet.Identity.Owin;
 
     [Authorize(Roles = "Administrator")]
     public class UsersController : Controller
     {
-        private ApplicationUserManager userManager;
-
-        public UsersController()
-        {
-        }
-
         public UsersController(ApplicationUserManager userManager)
         {
             this.UserManager = userManager;
         }
 
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return this.userManager ?? this.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-
-            private set
-            {
-                this.userManager = value;
-            }
-        }
+        private ApplicationUserManager UserManager { get; }
 
         // GET: Users
         public async Task<ActionResult> Index(UserListViewModel model)
@@ -96,17 +77,6 @@
             }
 
             return this.View(model);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && this.userManager != null)
-            {
-                this.userManager.Dispose();
-                this.userManager = null;
-            }
-
-            base.Dispose(disposing);
         }
     }
 }
