@@ -10,9 +10,9 @@
         public string Email { get; set; }
 
         [Required]
-        [MinLength(3, ErrorMessage = "The display name must be at least {0} characters long.")]
-        [Display(Name = "Display name")]
-        public string DisplayName { get; set; }
+        [MinLength(3, ErrorMessage = "The username must be at least {0} characters long.")]
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

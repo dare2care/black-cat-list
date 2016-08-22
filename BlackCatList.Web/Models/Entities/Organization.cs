@@ -31,6 +31,12 @@
 
         public Metadata Metadata { get; set; }
 
+        public virtual Country Country { get; set; }
+
+        public virtual City City { get; set; }
+
+        public virtual District District { get; set; }
+
         public virtual Street Street { get; set; }
 
         public virtual User CreatedBy { get; set; }

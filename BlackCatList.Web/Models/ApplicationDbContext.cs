@@ -21,7 +21,7 @@
 
         public virtual DbSet<Country> Countries { get; set; }
 
-        public virtual DbSet<Town> Towns { get; set; }
+        public virtual DbSet<City> Towns { get; set; }
 
         public virtual DbSet<District> Districts { get; set; }
 

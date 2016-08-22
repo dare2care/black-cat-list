@@ -7,6 +7,15 @@
     public class Address
     {
         [Index]
+        public int? CountryId { get; set; }
+
+        [Index]
+        public int? DistrictId { get; set; }
+
+        [Index]
+        public int? CityId { get; set; }
+
+        [Index]
         public int? StreetId { get; set; }
 
         [Range(0, int.MaxValue)]

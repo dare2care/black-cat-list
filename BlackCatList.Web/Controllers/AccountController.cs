@@ -93,16 +93,16 @@
                 return this.RedirectToAction("Index", "Manage");
             }
 
+            var info = await this.AuthenticationManager.GetExternalLoginInfoAsync();
             if (this.ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                var info = await this.AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
                     return this.View(nameof(this.ExternalLoginFailure));
                 }
 
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new User { UserName = model.UserName, Email = info.Email, EmailConfirmed = true };
                 var result = await this.UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -116,6 +116,9 @@
 
                 this.AddErrors(result);
             }
+
+            this.ViewBag.LoginProvider = info.Login.LoginProvider;
+            model.Email = info.Email;
 
             this.ViewBag.ReturnUrl = returnUrl;
             return this.View(model);
@@ -143,7 +146,7 @@
         {
             if (this.ModelState.IsValid)
             {
-                var user = await this.UserManager.FindByNameAsync(model.Email);
+                var user = await this.UserManager.FindByEmailAsync(model.Email);
                 if (user == null || !(await this.UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -188,7 +191,7 @@
             }
 
             // Require the user to have a confirmed email before they can log on.
-            var user = await this.UserManager.FindByNameAsync(model.Email);
+            var user = await this.UserManager.FindByEmailAsync(model.Email);
             if (user != null)
             {
                 if (!await this.UserManager.IsEmailConfirmedAsync(user.Id))
@@ -200,9 +203,7 @@
                 }
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await this.SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await this.SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: true);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -244,8 +245,7 @@
             {
                 var user = new User
                 {
-                    UserName = model.Email,
-                    DisplayName = model.DisplayName,
+                    UserName = model.UserName,
                     Email = model.Email
                 };
 
@@ -285,7 +285,7 @@
                 return this.View(model);
             }
 
-            var user = await this.UserManager.FindByNameAsync(model.Email);
+            var user = await this.UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist

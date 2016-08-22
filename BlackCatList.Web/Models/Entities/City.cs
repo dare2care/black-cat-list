@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Town : IIdentityEntity<int>
+    public class City : IIdentityEntity<int>
     {
         [Key]
         public int Id { get; set; }
