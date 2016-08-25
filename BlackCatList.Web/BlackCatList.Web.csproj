@@ -176,6 +176,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OrganizationsController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Models\Account\ExternalLoginConfirmationViewModel.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="Models\Entities\Person.cs" />
     <Compile Include="Models\Entities\City.cs" />
     <Compile Include="Models\Entities\User.cs" />
+    <Compile Include="Models\Organizations\OrganizationsViewModel.cs" />
     <Compile Include="Models\People\PersonViewModel.cs" />
     <Compile Include="Models\Results\ChallengeResult.cs" />
     <Compile Include="Models\Users\ManageRolesViewModel.cs" />
@@ -364,6 +366,11 @@
     <Content Include="Views\People\Details.cshtml" />
     <Content Include="Views\People\Edit.cshtml" />
     <Content Include="Views\People\Index.cshtml" />
+    <Content Include="Views\Organizations\Create.cshtml" />
+    <Content Include="Views\Organizations\Delete.cshtml" />
+    <Content Include="Views\Organizations\Details.cshtml" />
+    <Content Include="Views\Organizations\Edit.cshtml" />
+    <Content Include="Views\Organizations\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

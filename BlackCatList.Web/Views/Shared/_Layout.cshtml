@@ -29,6 +29,7 @@
 
                     @if (User.IsInRole("Moderator") || User.IsInRole("Administrator"))
                     {
+                        <li>@Html.ActionLink("Organizations", "Index", "Organizations")</li>
                         <li>@Html.ActionLink("People", "Index", "People")</li>
                     }
                 </ul>
