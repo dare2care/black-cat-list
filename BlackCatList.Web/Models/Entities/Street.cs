@@ -1,7 +1,6 @@
 ﻿namespace BlackCatList.Web.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Street : IIdentityEntity<int>
     {
@@ -9,13 +8,7 @@
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(200)]
         public string Name { get; set; }
-
-        [Index]
-        [Required]
-        [ForeignKey(nameof(District))]
-        public int DistrictId { get; set; }
-
-        public virtual District District { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace BlackCatList.Web.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,18 +25,26 @@
         [ForeignKey(nameof(Image))]
         public int? ImageId { get; set; }
 
+        public int? CountryId { get; set; }
+
+        public int? CityId { get; set; }
+
+        public int? StreetId { get; set; }
+
+        public string CreatedById { get; set; }
+
+        public string ModifiedById { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime ModifiedOn { get; set; }
+
         [Required]
         public string Comment { get; set; }
-
-        public Address Address { get; set; }
-
-        public Metadata Metadata { get; set; }
 
         public virtual Country Country { get; set; }
 
         public virtual City City { get; set; }
-
-        public virtual District District { get; set; }
 
         public virtual Street Street { get; set; }
 

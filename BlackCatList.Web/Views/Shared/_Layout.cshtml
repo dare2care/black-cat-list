@@ -26,6 +26,11 @@
                     {
                         <li>@Html.ActionLink("Users", "Index", "Users")</li>
                     }
+
+                    @if (User.IsInRole("Moderator") || User.IsInRole("Administrator"))
+                    {
+                        <li>@Html.ActionLink("People", "Index", "People")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

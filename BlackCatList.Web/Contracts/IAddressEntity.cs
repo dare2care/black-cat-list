@@ -4,18 +4,22 @@
 
     public interface IAddressEntity
     {
-        Address Address { get; set; }
+        [Index]
+        [ForeignKey(nameof(Country))]
+        int? CountryId { get; set; }
 
-        [ForeignKey(nameof(Models.Address.CountryId))]
+        [Index]
+        [ForeignKey(nameof(City))]
+        int? CityId { get; set; }
+
+        [Index]
+        [ForeignKey(nameof(Street))]
+        int? StreetId { get; set; }
+
         Country Country { get; set; }
 
-        [ForeignKey(nameof(Models.Address.CityId))]
         City City { get; set; }
 
-        [ForeignKey(nameof(Models.Address.DistrictId))]
-        District District { get; set; }
-
-        [ForeignKey(nameof(Models.Address.StreetId))]
         Street Street { get; set; }
     }
 }

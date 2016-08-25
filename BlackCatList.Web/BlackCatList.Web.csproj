@@ -176,6 +176,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Models\Account\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="Models\Account\ExternalLoginListViewModel.cs" />
@@ -187,11 +188,9 @@
     <Compile Include="Models\Account\SendCodeViewModel.cs" />
     <Compile Include="Models\Account\VerifyCodeViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
-    <Compile Include="Models\Entities\Address.cs" />
     <Compile Include="Models\Entities\Country.cs" />
     <Compile Include="Models\Entities\Image.cs" />
     <Compile Include="Contracts\IMetadataEntity.cs" />
-    <Compile Include="Models\Entities\District.cs" />
     <Compile Include="Models\Entities\Organization.cs" />
     <Compile Include="Models\Entities\Street.cs" />
     <Compile Include="Models\Manage\ChangePasswordViewModel.cs" />
@@ -201,10 +200,10 @@
     <Compile Include="Models\Manage\ManageLoginsViewModel.cs" />
     <Compile Include="Models\Manage\ManageMessageId.cs" />
     <Compile Include="Models\Manage\SetPasswordViewModel.cs" />
-    <Compile Include="Models\Entities\Metadata.cs" />
     <Compile Include="Models\Entities\Person.cs" />
     <Compile Include="Models\Entities\City.cs" />
     <Compile Include="Models\Entities\User.cs" />
+    <Compile Include="Models\People\PersonViewModel.cs" />
     <Compile Include="Models\Results\ChallengeResult.cs" />
     <Compile Include="Models\Users\ManageRolesViewModel.cs" />
     <Compile Include="Models\Users\UserListViewModel.cs" />
@@ -360,6 +359,11 @@
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\Users\ManageRoles.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\People\Create.cshtml" />
+    <Content Include="Views\People\Delete.cshtml" />
+    <Content Include="Views\People\Details.cshtml" />
+    <Content Include="Views\People\Edit.cshtml" />
+    <Content Include="Views\People\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

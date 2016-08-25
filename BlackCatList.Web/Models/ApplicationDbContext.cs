@@ -23,9 +23,11 @@
 
         public virtual DbSet<City> Towns { get; set; }
 
-        public virtual DbSet<District> Districts { get; set; }
-
         public virtual DbSet<Street> Streets { get; set; }
+
+        public DbSet<Image> Images { get; set; }
+
+        public DbSet<Organization> Organizations { get; set; }
 
         private IEnumerable<IMetadataEntity> AddedMetadataEntities =>
             this.ChangeTracker.Entries<IMetadataEntity>()
@@ -63,19 +65,19 @@
 
             foreach (var added in this.AddedMetadataEntities)
             {
-                added.Metadata = new Metadata
-                {
-                    CreatedById = userIdentity.GetUserId(),
-                    ModifiedById = userIdentity.GetUserId(),
-                    CreatedOn = utcNow,
-                    ModifiedOn = utcNow
-                };
+                added.CreatedById = userIdentity.GetUserId();
+                added.ModifiedById = userIdentity.GetUserId();
+                added.CreatedOn = utcNow;
+                added.ModifiedOn = utcNow;
             }
 
             foreach (var updated in this.ModifiedMetadataEntities)
             {
-                updated.Metadata.ModifiedById = userIdentity.GetUserId();
-                updated.Metadata.ModifiedOn = utcNow;
+                this.Entry(updated).Property(x => x.CreatedOn).IsModified = false;
+                this.Entry(updated).Property(x => x.CreatedById).IsModified = false;
+
+                updated.ModifiedById = userIdentity.GetUserId();
+                updated.ModifiedOn = utcNow;
             }
         }
     }
