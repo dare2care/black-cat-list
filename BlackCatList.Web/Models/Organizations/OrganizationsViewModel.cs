@@ -1,10 +1,7 @@
 ﻿namespace BlackCatList.Web.Models.Organizations
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using System.Web;
 
     public class OrganizationsViewModel
     {
@@ -47,6 +44,11 @@
 
         public DateTime ModifiedOn { get; set; }
 
+        public string Category { get; set; }
+
+        [Required]
+        public int CategoryId { get; set; }
+
         public static OrganizationsViewModel Create(Organization organization)
         {
             return new OrganizationsViewModel
@@ -63,6 +65,7 @@
                 City = organization.City?.Name,
                 Street = organization.Street?.Name,
                 StreetId = organization.StreetId,
+                Category = organization.Category.Name,
                 CreatedBy = organization.CreatedBy.UserName,
                 CreatedOn = organization.CreatedOn,
                 ModifiedBy = organization.ModifiedBy.UserName,
@@ -80,6 +83,7 @@
                 Email = this.Email,
                 // Image = new Image { Content = this.Photo },
                 Comment = this.Comment,
+                CategoryId = this.CategoryId
             };
         }
     }

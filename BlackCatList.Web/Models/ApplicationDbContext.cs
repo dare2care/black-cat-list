@@ -25,9 +25,11 @@
 
         public virtual DbSet<Street> Streets { get; set; }
 
-        public DbSet<Image> Images { get; set; }
+        public virtual DbSet<Image> Images { get; set; }
 
-        public DbSet<Organization> Organizations { get; set; }
+        public virtual DbSet<Organization> Organizations { get; set; }
+
+        public virtual DbSet<Category> Categories { get; set; }
 
         private IEnumerable<IMetadataEntity> AddedMetadataEntities =>
             this.ChangeTracker.Entries<IMetadataEntity>()

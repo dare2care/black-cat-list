@@ -40,6 +40,10 @@
         public DateTime ModifiedOn { get; set; }
 
         [Required]
+        [ForeignKey(nameof(Category))]
+        public int CategoryId { get; set; }
+
+        [Required]
         public string Comment { get; set; }
 
         public virtual Country Country { get; set; }
@@ -53,5 +57,7 @@
         public virtual User ModifiedBy { get; set; }
 
         public virtual Image Image { get; set; }
+
+        public virtual Category Category { get; set; }
     }
 }

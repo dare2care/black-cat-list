@@ -40,6 +40,8 @@
         // GET: Organizations/Create
         public ActionResult Create()
         {
+            this.ViewBag.CategoryId = new SelectList(this.db.Categories, "Id", "Name");
+
             return this.View();
         }
 
@@ -54,6 +56,8 @@
                 await this.db.SaveChangesAsync();
                 return this.RedirectToAction("Index");
             }
+
+            this.ViewBag.CategoryId = new SelectList(this.db.Categories, "Id", "Name", organization.CategoryId);
 
             return this.View(organization);
         }
@@ -72,6 +76,8 @@
                 return this.HttpNotFound();
             }
 
+            this.ViewBag.CategoryId = new SelectList(this.db.Categories, "Id", "Name", organization.CategoryId);
+
             return this.View(OrganizationsViewModel.Create(organization));
         }
 
@@ -86,6 +92,8 @@
                 await this.db.SaveChangesAsync();
                 return this.RedirectToAction("Index");
             }
+
+            this.ViewBag.CategoryId = new SelectList(this.db.Categories, "Id", "Name", organization.CategoryId);
 
             return this.View(organization);
         }
