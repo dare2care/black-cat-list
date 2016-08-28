@@ -28,11 +28,29 @@
     "inputFiles": [
       "Scripts/jquery.validate.js",
       "Scripts/jquery.validate.unobtrusive.js",
+      "Scripts/jquery.autosize.js",
       "Scripts/jquery.validate.extensions.js"
     ],
     "minify": {
       "enabled": true,
       "preserveImportantComments": false
     }
+  },
+  {
+    "outputFileName": "Scripts/autocomplete.bundle.js",
+    "inputFiles": [
+      "Scripts/jquery-ui.js",
+      "Scripts/jquery.autocomplete.unobtrusive.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "preserveImportantComments": false
+    }
+  },
+  {
+    "outputFileName": "Content/jquery-ui.min.css",
+    "inputFiles": [
+      "Content/jquery-ui.css"
+    ]
   }
 ]

@@ -25,7 +25,7 @@
         [ForeignKey(nameof(Image))]
         public int? ImageId { get; set; }
 
-        public int? CountryId { get; set; }
+        public int CountryId { get; set; }
 
         public int? CityId { get; set; }
 
@@ -39,12 +39,13 @@
 
         public DateTime ModifiedOn { get; set; }
 
+        [Index]
         [Required]
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
 
         [Required]
-        public string Comment { get; set; }
+        public string Description { get; set; }
 
         public virtual Country Country { get; set; }
 

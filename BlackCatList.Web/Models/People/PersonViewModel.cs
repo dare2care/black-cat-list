@@ -1,9 +1,11 @@
 ﻿namespace BlackCatList.Web.Models.People
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
-    public class PersonViewModel
+    public class PersonViewModel : IAddressViewModel
     {
         public int Id { get; set; }
 
@@ -21,12 +23,16 @@
 
         public byte? Age { get; set; }
 
+        [Display(Name = "Organization")]
         public int? OrganizationId { get; set; }
+
+        public SelectList Organizations { get; set; }
 
         public string Organization { get; set; }
 
         public byte[] Photo { get; set; }
 
+        [Required]
         public string Country { get; set; }
 
         public string City { get; set; }
@@ -34,9 +40,10 @@
         public string Street { get; set; }
 
         [Required]
+        [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
 
-        public int? CountryId { get; set; }
+        public int CountryId { get; set; }
 
         public int? CityId { get; set; }
 
@@ -63,12 +70,9 @@
                 Organization = person.Organization?.Name,
                 Photo = person.Image?.Content,
                 Comment = person.Comment,
-                CountryId = person.CountryId,
                 Country = person.Country?.Name,
-                CityId = person.CityId,
                 City = person.City?.Name,
                 Street = person.Street?.Name,
-                StreetId = person.StreetId,
                 CreatedBy = person.CreatedBy.UserName,
                 CreatedOn = person.CreatedOn,
                 ModifiedBy = person.ModifiedBy.UserName,
@@ -86,9 +90,20 @@
                 Email = this.Email,
                 Age = this.Age,
                 OrganizationId = this.OrganizationId,
+                CountryId = this.CountryId,
+                CityId = this.CityId,
+                StreetId = this.StreetId,
                 // Image = new Image { Content = this.Photo },
                 Comment = this.Comment,
             };
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!string.IsNullOrWhiteSpace(this.Street) && string.IsNullOrWhiteSpace(this.City))
+            {
+                yield return new ValidationResult("The City field is required.", new[] { nameof(this.City) });
+            }
         }
     }
 }

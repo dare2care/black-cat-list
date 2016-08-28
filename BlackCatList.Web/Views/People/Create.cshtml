@@ -4,12 +4,16 @@
     ViewBag.Title = "Create";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/Content/jquery-ui.css" />
+}
+
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Person</h4>
         <hr />
@@ -47,17 +51,17 @@
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.ImageId, "ImageId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ImageId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ImageId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.ImageId, "ImageId", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("ImageId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ImageId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.OrganizationId, "OrganizationId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.OrganizationId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("OrganizationId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.OrganizationId, Model.Organizations, "Select one", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.OrganizationId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -106,4 +110,5 @@
 </div>
 @section Scripts {
     <script src="~/Scripts/validate.bundle.js"></script>
+    <script src="~/Scripts/autocomplete.bundle.js"></script>
 }

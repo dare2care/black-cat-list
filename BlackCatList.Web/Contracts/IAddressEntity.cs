@@ -1,12 +1,14 @@
 ﻿namespace BlackCatList.Web.Models
 {
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     public interface IAddressEntity
     {
         [Index]
+        [Required]
         [ForeignKey(nameof(Country))]
-        int? CountryId { get; set; }
+        int CountryId { get; set; }
 
         [Index]
         [ForeignKey(nameof(City))]

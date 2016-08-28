@@ -27,10 +27,13 @@
 
             builder.RegisterModule<AutofacWebTypesModule>();
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
+
             builder.Register(x => x.Resolve<IOwinContext>().Authentication).InstancePerRequest();
             builder.Register(x => x.Resolve<IOwinContext>().Get<ApplicationDbContext>()).InstancePerRequest();
             builder.Register(x => x.Resolve<IOwinContext>().Get<ApplicationUserManager>()).InstancePerRequest();
             builder.Register(x => x.Resolve<IOwinContext>().Get<ApplicationSignInManager>()).InstancePerRequest();
+
+            builder.RegisterType<AddressMapper>().InstancePerRequest();
 
             var container = builder.Build();
 

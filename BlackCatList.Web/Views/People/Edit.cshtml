@@ -1,6 +1,11 @@
 ﻿@model BlackCatList.Web.Models.People.PersonViewModel
+
 @{
     ViewBag.Title = "Edit";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Content/jquery-ui.css" />
 }
 
 <h2>Edit</h2>
@@ -56,9 +61,9 @@
         </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.OrganizationId, "OrganizationId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.OrganizationId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("OrganizationId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.OrganizationId, Model.Organizations, "Select one", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.OrganizationId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -108,4 +113,5 @@
 </div>
 @section Scripts {
     <script src="~/Scripts/validate.bundle.js"></script>
+    <script src="~/Scripts/autocomplete.bundle.js"></script>
 }

@@ -11,12 +11,15 @@
     [Authorize(Roles = "Administrator,Moderator")]
     public class PeopleController : Controller
     {
-        public PeopleController(ApplicationDbContext dbContext)
+        public PeopleController(ApplicationDbContext dbContext, AddressMapper addressMapper)
         {
             this.DbContext = dbContext;
+            this.AddressMapper = addressMapper;
         }
 
         private ApplicationDbContext DbContext { get; }
+
+        private AddressMapper AddressMapper { get; }
 
         // GET: People
         public async Task<ActionResult> Index()
@@ -33,20 +36,22 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Person person = await this.DbContext.People.FindAsync(id);
-            if (person == null)
+            var entity = await this.DbContext.People.FindAsync(id);
+            if (entity == null)
             {
                 return this.HttpNotFound();
             }
 
-            return this.View(PersonViewModel.Create(person));
+            return this.View(PersonViewModel.Create(entity));
         }
 
         // GET: People/Create
         public ActionResult Create()
         {
-            this.ViewBag.OrganizationId = new SelectList(this.DbContext.Organizations, "Id", "Name");
-            return this.View();
+            return this.View(new PersonViewModel
+            {
+                Organizations = new SelectList(this.DbContext.Organizations, "Id", "Name")
+            });
         }
 
         // POST: People/Create
@@ -56,12 +61,17 @@
         {
             if (this.ModelState.IsValid)
             {
+                await this.AddressMapper.MapAsync(person);
+
                 this.DbContext.People.Add(person.ToEntity());
+
                 await this.DbContext.SaveChangesAsync();
+
                 return this.RedirectToAction("Index");
             }
 
-            this.ViewBag.OrganizationId = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
+            person.Organizations = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
+
             return this.View(person);
         }
 
@@ -73,15 +83,17 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Person person = await this.DbContext.People.FindAsync(id);
-            if (person == null)
+            var entity = await this.DbContext.People.FindAsync(id);
+            if (entity == null)
             {
                 return this.HttpNotFound();
             }
 
-            this.ViewBag.ImageId = new SelectList(this.DbContext.Images, "Id", "Id", person.ImageId);
-            this.ViewBag.OrganizationId = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
-            return this.View(PersonViewModel.Create(person));
+            var person = PersonViewModel.Create(entity);
+
+            person.Organizations = new SelectList(this.DbContext.Organizations, "Id", "Name", entity.OrganizationId);
+
+            return this.View(person);
         }
 
         // POST: People/Edit/5
@@ -91,12 +103,17 @@
         {
             if (this.ModelState.IsValid)
             {
+                await this.AddressMapper.MapAsync(person);
+
                 this.DbContext.Entry(person.ToEntity()).State = EntityState.Modified;
+
                 await this.DbContext.SaveChangesAsync();
+
                 return this.RedirectToAction("Index");
             }
 
-            this.ViewBag.OrganizationId = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
+            person.Organizations = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
+
             return this.View(person);
         }
 
@@ -108,13 +125,17 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Person person = await this.DbContext.People.FindAsync(id);
-            if (person == null)
+            var entity = await this.DbContext.People.FindAsync(id);
+            if (entity == null)
             {
                 return this.HttpNotFound();
             }
 
-            return this.View(PersonViewModel.Create(person));
+            var person = PersonViewModel.Create(entity);
+
+            person.Organizations = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
+
+            return this.View(person);
         }
 
         // POST: People/Delete/5
@@ -123,8 +144,8 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Person person = await this.DbContext.People.FindAsync(id);
-            this.DbContext.People.Remove(person);
+            var entity = await this.DbContext.People.FindAsync(id);
+            this.DbContext.People.Remove(entity);
             await this.DbContext.SaveChangesAsync();
             return this.RedirectToAction("Index");
         }

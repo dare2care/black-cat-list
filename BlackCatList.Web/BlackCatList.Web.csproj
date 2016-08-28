@@ -38,8 +38,8 @@
     <MvcBuildViews>true</MvcBuildViews>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.0.0\lib\net451\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -113,15 +113,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Net.Http.Formatting">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -167,13 +158,14 @@
     <Compile Include="Config\FilterConfig.cs" />
     <Compile Include="Config\RouteConfig.cs" />
     <Compile Include="Config\Startup.Auth.cs" />
-    <Compile Include="Config\WebApiConfig.cs" />
     <Compile Include="Config\Identity\ApplicationSignInManager.cs" />
     <Compile Include="Config\Identity\ApplicationUserManager.cs" />
     <Compile Include="Config\Identity\EmailService.cs" />
+    <Compile Include="Contracts\IAddressViewModel.cs" />
     <Compile Include="Contracts\IAddressEntity.cs" />
     <Compile Include="Contracts\IIdentityEntity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrganizationsController.cs" />
@@ -208,6 +200,7 @@
     <Compile Include="Models\Organizations\OrganizationsViewModel.cs" />
     <Compile Include="Models\People\PersonViewModel.cs" />
     <Compile Include="Models\Results\ChallengeResult.cs" />
+    <Compile Include="Models\Shared\AddressMapper.cs" />
     <Compile Include="Models\Users\ManageRolesViewModel.cs" />
     <Compile Include="Models\Users\UserListViewModel.cs" />
     <Compile Include="MvcApplication.cs">
@@ -225,6 +218,10 @@
     <None Include="Content\layout.css">
       <DependentUpon>layout.less</DependentUpon>
     </None>
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\jquery-ui.min.css">
+      <DependentUpon>jquery-ui.css</DependentUpon>
+    </Content>
     <Content Include="Content\layout.bundle.css" />
     <Content Include="Content\layout.bundle.min.css">
       <DependentUpon>layout.bundle.css</DependentUpon>
@@ -315,6 +312,16 @@
     <None Include="Scripts\jquery-1.12.4.js" />
     <None Include="Scripts\jquery.validate.js" />
     <None Include="Scripts\jquery.validate.unobtrusive.js" />
+    <None Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\autocomplete.bundle.js" />
+    <Content Include="Scripts\autocomplete.bundle.min.js">
+      <DependentUpon>autocomplete.bundle.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-ui.min.js">
+      <DependentUpon>jquery-ui.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\jquery.autocomplete.unobtrusive.js" />
+    <Content Include="Scripts\jquery.autosize.js" />
     <Content Include="Scripts\jquery.validate.extensions.js" />
     <Content Include="Scripts\layout.bundle.js" />
     <Content Include="Scripts\layout.bundle.min.js">
@@ -372,9 +379,7 @@
     <Content Include="Views\Organizations\Details.cshtml" />
     <Content Include="Views\Organizations\Edit.cshtml" />
     <Content Include="Views\Organizations\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Content Include="Views\Organizations\_BackLink.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

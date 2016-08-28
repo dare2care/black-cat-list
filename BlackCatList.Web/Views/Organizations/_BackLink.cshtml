@@ -1,0 +1,8 @@
+﻿@if (User.IsInRole("Administrator") && User.IsInRole("Moderator"))
+{
+    @Html.ActionLink("Back to List", "Index")
+}
+else
+{
+    @Html.ActionLink("Back to Home", "Index", "Home")
+}

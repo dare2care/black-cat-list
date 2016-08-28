@@ -5,20 +5,25 @@
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Mvc;
+    using Microsoft.AspNet.Identity;
     using Models;
     using Models.Organizations;
 
-    [Authorize(Roles = "Administrator,Moderator")]
+    [Authorize]
     public class OrganizationsController : Controller
     {
-        public OrganizationsController(ApplicationDbContext dbContext)
+        public OrganizationsController(ApplicationDbContext dbContext, AddressMapper addressMapper)
         {
             this.DbContext = dbContext;
+            this.AddressMapper = addressMapper;
         }
 
         private ApplicationDbContext DbContext { get; }
 
+        private AddressMapper AddressMapper { get; }
+
         // GET: Organizations
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<ActionResult> Index()
         {
             var organizations = this.DbContext.Organizations.Include(o => o.City).Include(o => o.Country).Include(o => o.CreatedBy).Include(o => o.Image).Include(o => o.ModifiedBy).Include(o => o.Street);
@@ -33,21 +38,22 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Organization organization = await this.DbContext.Organizations.FindAsync(id);
-            if (organization == null)
+            var entity = await this.DbContext.Organizations.FindAsync(id);
+            if (entity == null)
             {
                 return this.HttpNotFound();
             }
 
-            return this.View(OrganizationsViewModel.Create(organization));
+            return this.View(OrganizationsViewModel.Create(entity));
         }
 
         // GET: Organizations/Create
         public ActionResult Create()
         {
-            this.ViewBag.CategoryId = new SelectList(this.DbContext.Categories, "Id", "Name");
-
-            return this.View();
+            return this.View(new OrganizationsViewModel
+            {
+                Categories = new SelectList(this.DbContext.Categories, "Id", "Name")
+            });
         }
 
         // POST: Organizations/Create
@@ -57,12 +63,16 @@
         {
             if (this.ModelState.IsValid)
             {
+                await this.AddressMapper.MapAsync(organization);
+
                 this.DbContext.Organizations.Add(organization.ToEntity());
+
                 await this.DbContext.SaveChangesAsync();
-                return this.RedirectToAction("Index");
+
+                return this.RedirectToAuthorizedAction(organization.Id);
             }
 
-            this.ViewBag.CategoryId = new SelectList(this.DbContext.Categories, "Id", "Name", organization.CategoryId);
+            organization.Categories = new SelectList(this.DbContext.Categories, "Id", "Name", organization.CategoryId);
 
             return this.View(organization);
         }
@@ -75,15 +85,22 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Organization organization = await this.DbContext.Organizations.FindAsync(id);
-            if (organization == null)
+            var entity = await this.DbContext.Organizations.FindAsync(id);
+            if (entity == null)
             {
                 return this.HttpNotFound();
             }
 
-            this.ViewBag.CategoryId = new SelectList(this.DbContext.Categories, "Id", "Name", organization.CategoryId);
+            if (this.IsNotAuthorizedCreator(entity))
+            {
+                return new HttpUnauthorizedResult();
+            }
 
-            return this.View(OrganizationsViewModel.Create(organization));
+            var organization = OrganizationsViewModel.Create(entity);
+
+            organization.Categories = new SelectList(this.DbContext.Categories, "Id", "Name", organization.CategoryId);
+
+            return this.View(organization);
         }
 
         // POST: Organizations/Edit/5
@@ -93,17 +110,28 @@
         {
             if (this.ModelState.IsValid)
             {
-                this.DbContext.Entry(organization.ToEntity()).State = EntityState.Modified;
+                var entity = await this.DbContext.Organizations.FindAsync(organization.Id);
+                if (this.IsNotAuthorizedCreator(entity))
+                {
+                    return new HttpUnauthorizedResult();
+                }
+
+                await this.AddressMapper.MapAsync(organization);
+
+                this.DbContext.Entry(organization.ToEntity(entity)).State = EntityState.Modified;
+
                 await this.DbContext.SaveChangesAsync();
-                return this.RedirectToAction("Index");
+
+                return this.RedirectToAuthorizedAction(organization.Id);
             }
 
-            this.ViewBag.CategoryId = new SelectList(this.DbContext.Categories, "Id", "Name", organization.CategoryId);
+            organization.Categories = new SelectList(this.DbContext.Categories, "Id", "Name", organization.CategoryId);
 
             return this.View(organization);
         }
 
         // GET: Organizations/Delete/5
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -111,25 +139,26 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Organization organization = await this.DbContext.Organizations.FindAsync(id);
-            if (organization == null)
+            var entity = await this.DbContext.Organizations.FindAsync(id);
+            if (entity == null)
             {
                 return this.HttpNotFound();
             }
 
-            return this.View(OrganizationsViewModel.Create(organization));
+            return this.View(OrganizationsViewModel.Create(entity));
         }
 
         // POST: Organizations/Delete/5
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Organization organization = await this.DbContext.Organizations.FindAsync(id);
-            this.DbContext.Organizations.Remove(organization);
+            var entity = await this.DbContext.Organizations.FindAsync(id);
+            this.DbContext.Organizations.Remove(entity);
             await this.DbContext.SaveChangesAsync();
-            return this.RedirectToAction("Index");
+            return this.RedirectToAuthorizedAction(id);
         }
 
         protected override void Dispose(bool disposing)
@@ -140,6 +169,26 @@
             }
 
             base.Dispose(disposing);
+        }
+
+        private ActionResult RedirectToAuthorizedAction(int id)
+        {
+            if (this.IsUser())
+            {
+                return this.RedirectToAction("Details", new { id });
+            }
+
+            return this.RedirectToAction("Index");
+        }
+
+        private bool IsNotAuthorizedCreator(Organization entity)
+        {
+            return this.IsUser() && entity.CreatedById != this.User.Identity.GetUserId();
+        }
+
+        private bool IsUser()
+        {
+            return !this.User.IsInRole("Administrator") && !this.User.IsInRole("Moderator");
         }
     }
 }

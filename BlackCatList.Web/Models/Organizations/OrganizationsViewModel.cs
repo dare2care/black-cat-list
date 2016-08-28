@@ -1,9 +1,11 @@
 ﻿namespace BlackCatList.Web.Models.Organizations
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
-    public class OrganizationsViewModel
+    public class OrganizationsViewModel : IAddressViewModel
     {
         public int Id { get; set; }
 
@@ -21,6 +23,7 @@
 
         public byte[] Photo { get; set; }
 
+        [Required]
         public string Country { get; set; }
 
         public string City { get; set; }
@@ -28,9 +31,10 @@
         public string Street { get; set; }
 
         [Required]
-        public string Comment { get; set; }
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
 
-        public int? CountryId { get; set; }
+        public int CountryId { get; set; }
 
         public int? CityId { get; set; }
 
@@ -46,7 +50,10 @@
 
         public string Category { get; set; }
 
+        public SelectList Categories { get; set; }
+
         [Required]
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
         public static OrganizationsViewModel Create(Organization organization)
@@ -58,14 +65,12 @@
                 Phone = organization.Phone,
                 Email = organization.Email,
                 Photo = organization.Image?.Content,
-                Comment = organization.Comment,
-                CountryId = organization.CountryId,
+                Description = organization.Description,
                 Country = organization.Country?.Name,
-                CityId = organization.CityId,
                 City = organization.City?.Name,
                 Street = organization.Street?.Name,
-                StreetId = organization.StreetId,
                 Category = organization.Category.Name,
+                CategoryId = organization.CategoryId,
                 CreatedBy = organization.CreatedBy.UserName,
                 CreatedOn = organization.CreatedOn,
                 ModifiedBy = organization.ModifiedBy.UserName,
@@ -73,18 +78,30 @@
             };
         }
 
-        public Organization ToEntity()
+        public Organization ToEntity(Organization entity = null)
         {
-            return new Organization
+            entity = entity ?? new Organization();
+
+            entity.Id = this.Id;
+            entity.Name = this.Name;
+            entity.Phone = this.Phone;
+            entity.Email = this.Email;
+            entity.CountryId = this.CountryId;
+            entity.CityId = this.CityId;
+            entity.StreetId = this.StreetId;
+            // entity.Image = new Image { Content = this.Photo };
+            entity.Description = this.Description;
+            entity.CategoryId = this.CategoryId;
+
+            return entity;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!string.IsNullOrWhiteSpace(this.Street) && string.IsNullOrWhiteSpace(this.City))
             {
-                Id = this.Id,
-                Name = this.Name,
-                Phone = this.Phone,
-                Email = this.Email,
-                // Image = new Image { Content = this.Photo },
-                Comment = this.Comment,
-                CategoryId = this.CategoryId
-            };
+                yield return new ValidationResult("The City field is required.", new[] { nameof(this.City) });
+            }
         }
     }
 }

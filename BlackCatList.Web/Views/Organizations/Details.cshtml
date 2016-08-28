@@ -50,11 +50,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Comment)
+            @Html.DisplayNameFor(model => model.Description)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Comment)
+            @Html.DisplayFor(model => model.Description)
         </dd>
 
         <dt>
@@ -81,40 +81,46 @@
             @Html.DisplayFor(model => model.Street)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
+        @if (User.IsInRole("Administrator") && User.IsInRole("Moderator"))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.CreatedBy)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreatedOn)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.CreatedOn)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ModifiedBy)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedBy)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ModifiedBy)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedBy)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ModifiedOn)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ModifiedOn)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedOn)
+            </dd>
+        }
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (Model.CreatedBy == User.Identity.GetUserName() || User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @:|
+    }
+    @Html.Partial("_BackLink")
 </p>
