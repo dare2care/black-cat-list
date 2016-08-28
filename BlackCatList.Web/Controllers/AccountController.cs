@@ -203,7 +203,7 @@
                 }
             }
 
-            var result = await this.SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: true);
+            var result = await this.SignInManager.PasswordSignInAsync(user?.UserName ?? string.Empty, model.Password, model.RememberMe, shouldLockout: true);
             switch (result)
             {
                 case SignInStatus.Success:
