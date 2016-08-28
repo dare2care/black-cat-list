@@ -3,9 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web;
     using System.Web.Mvc;
 
-    public class OrganizationsViewModel : IAddressViewModel
+    public class OrganizationsViewModel : IAddressViewModel, IImageViewModel
     {
         public int Id { get; set; }
 
@@ -21,7 +22,9 @@
         [MaxLength(100)]
         public string Email { get; set; }
 
-        public byte[] Photo { get; set; }
+        public int? ImageId { get; set; }
+
+        public HttpPostedFileBase Image { get; set; }
 
         [Required]
         public string Country { get; set; }
@@ -64,7 +67,7 @@
                 Name = organization.Name,
                 Phone = organization.Phone,
                 Email = organization.Email,
-                Photo = organization.Image?.Content,
+                ImageId = organization.ImageId,
                 Description = organization.Description,
                 Country = organization.Country?.Name,
                 City = organization.City?.Name,
@@ -89,9 +92,10 @@
             entity.CountryId = this.CountryId;
             entity.CityId = this.CityId;
             entity.StreetId = this.StreetId;
-            // entity.Image = new Image { Content = this.Photo };
             entity.Description = this.Description;
             entity.CategoryId = this.CategoryId;
+
+            entity.SaveImage(this.Image);
 
             return entity;
         }

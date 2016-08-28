@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Person : IIdentityEntity<int>, IAddressEntity, IMetadataEntity
+    public class Person : IIdentityEntity<int>, IAddressEntity, IMetadataEntity, IImageEntity
     {
         [Key]
         public int Id { get; set; }
@@ -23,8 +23,6 @@
 
         public byte? Age { get; set; }
 
-        [Index]
-        [ForeignKey(nameof(Image))]
         public int? ImageId { get; set; }
 
         [Index]

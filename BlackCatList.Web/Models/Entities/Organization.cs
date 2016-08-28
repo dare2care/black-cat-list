@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Organization : IIdentityEntity<int>, IAddressEntity, IMetadataEntity
+    public class Organization : IIdentityEntity<int>, IAddressEntity, IMetadataEntity, IImageEntity
     {
         [Key]
         public int Id { get; set; }
@@ -21,8 +21,6 @@
         [MaxLength(100)]
         public string Email { get; set; }
 
-        [Index]
-        [ForeignKey(nameof(Image))]
         public int? ImageId { get; set; }
 
         public int CountryId { get; set; }

@@ -3,9 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web;
     using System.Web.Mvc;
 
-    public class PersonViewModel : IAddressViewModel
+    public class PersonViewModel : IAddressViewModel, IImageViewModel
     {
         public int Id { get; set; }
 
@@ -30,7 +31,9 @@
 
         public string Organization { get; set; }
 
-        public byte[] Photo { get; set; }
+        public int? ImageId { get; set; }
+
+        public HttpPostedFileBase Photo { get; set; }
 
         [Required]
         public string Country { get; set; }
@@ -68,7 +71,7 @@
                 Age = person.Age,
                 OrganizationId = person.OrganizationId,
                 Organization = person.Organization?.Name,
-                Photo = person.Image?.Content,
+                ImageId = person.ImageId,
                 Comment = person.Comment,
                 Country = person.Country?.Name,
                 City = person.City?.Name,
@@ -80,22 +83,24 @@
             };
         }
 
-        public Person ToEntity()
+        public Person ToEntity(Person entity = null)
         {
-            return new Person
-            {
-                Id = this.Id,
-                Name = this.Name,
-                Phone = this.Phone,
-                Email = this.Email,
-                Age = this.Age,
-                OrganizationId = this.OrganizationId,
-                CountryId = this.CountryId,
-                CityId = this.CityId,
-                StreetId = this.StreetId,
-                // Image = new Image { Content = this.Photo },
-                Comment = this.Comment,
-            };
+            entity = entity ?? new Person();
+
+            entity.Id = this.Id;
+            entity.Name = this.Name;
+            entity.Phone = this.Phone;
+            entity.Email = this.Email;
+            entity.Age = this.Age;
+            entity.OrganizationId = this.OrganizationId;
+            entity.CountryId = this.CountryId;
+            entity.CityId = this.CityId;
+            entity.StreetId = this.StreetId;
+            entity.Comment = this.Comment;
+
+            entity.SaveImage(this.Photo);
+
+            return entity;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

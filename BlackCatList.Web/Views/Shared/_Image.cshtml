@@ -1,0 +1,10 @@
+﻿@model IImageViewModel
+
+@if (Model.ImageId.HasValue)
+{
+    <img src="@Url.Action("Index", "Images", new { id = Model.ImageId })" alt="Image for @Model.Name" />
+}
+else
+{
+    <img src="~/Content/image-not-found.png" alt="Image not found" />
+}

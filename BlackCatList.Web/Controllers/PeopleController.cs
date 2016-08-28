@@ -103,9 +103,11 @@
         {
             if (this.ModelState.IsValid)
             {
+                var entity = await this.DbContext.People.FindAsync(person.Id);
+
                 await this.AddressMapper.MapAsync(person);
 
-                this.DbContext.Entry(person.ToEntity()).State = EntityState.Modified;
+                this.DbContext.Entry(person.ToEntity(entity)).State = EntityState.Modified;
 
                 await this.DbContext.SaveChangesAsync();
 

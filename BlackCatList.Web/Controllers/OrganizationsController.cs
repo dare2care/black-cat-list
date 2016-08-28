@@ -65,11 +65,12 @@
             {
                 await this.AddressMapper.MapAsync(organization);
 
-                this.DbContext.Organizations.Add(organization.ToEntity());
+                var entity = organization.ToEntity();
+                this.DbContext.Organizations.Add(entity);
 
                 await this.DbContext.SaveChangesAsync();
 
-                return this.RedirectToAuthorizedAction(organization.Id);
+                return this.RedirectToAuthorizedAction(entity.Id);
             }
 
             organization.Categories = new SelectList(this.DbContext.Categories, "Id", "Name", organization.CategoryId);

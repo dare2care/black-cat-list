@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Photo)
+                @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Category)
@@ -59,10 +59,10 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Photo)
+                @Html.Partial("_Image", item)
             </td>
             <td>
-                @Html.DisplayFor(modelItem=>item.Category)
+                @Html.DisplayFor(modelItem => item.Category)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
