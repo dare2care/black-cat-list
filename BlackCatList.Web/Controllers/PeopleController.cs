@@ -11,12 +11,17 @@
     [Authorize(Roles = "Administrator,Moderator")]
     public class PeopleController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        public PeopleController(ApplicationDbContext dbContext)
+        {
+            this.DbContext = dbContext;
+        }
+
+        private ApplicationDbContext DbContext { get; }
 
         // GET: People
         public async Task<ActionResult> Index()
         {
-            var people = this.db.People.Include(p => p.Image).Include(p => p.Organization);
+            var people = this.DbContext.People.Include(p => p.Image).Include(p => p.Organization);
             return this.View((await people.ToListAsync()).Select(PersonViewModel.Create));
         }
 
@@ -28,7 +33,7 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Person person = await this.db.People.FindAsync(id);
+            Person person = await this.DbContext.People.FindAsync(id);
             if (person == null)
             {
                 return this.HttpNotFound();
@@ -40,7 +45,7 @@
         // GET: People/Create
         public ActionResult Create()
         {
-            this.ViewBag.OrganizationId = new SelectList(this.db.Organizations, "Id", "Name");
+            this.ViewBag.OrganizationId = new SelectList(this.DbContext.Organizations, "Id", "Name");
             return this.View();
         }
 
@@ -51,12 +56,12 @@
         {
             if (this.ModelState.IsValid)
             {
-                this.db.People.Add(person.ToEntity());
-                await this.db.SaveChangesAsync();
+                this.DbContext.People.Add(person.ToEntity());
+                await this.DbContext.SaveChangesAsync();
                 return this.RedirectToAction("Index");
             }
 
-            this.ViewBag.OrganizationId = new SelectList(this.db.Organizations, "Id", "Name", person.OrganizationId);
+            this.ViewBag.OrganizationId = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
             return this.View(person);
         }
 
@@ -68,14 +73,14 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Person person = await this.db.People.FindAsync(id);
+            Person person = await this.DbContext.People.FindAsync(id);
             if (person == null)
             {
                 return this.HttpNotFound();
             }
 
-            this.ViewBag.ImageId = new SelectList(this.db.Images, "Id", "Id", person.ImageId);
-            this.ViewBag.OrganizationId = new SelectList(this.db.Organizations, "Id", "Name", person.OrganizationId);
+            this.ViewBag.ImageId = new SelectList(this.DbContext.Images, "Id", "Id", person.ImageId);
+            this.ViewBag.OrganizationId = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
             return this.View(PersonViewModel.Create(person));
         }
 
@@ -86,12 +91,12 @@
         {
             if (this.ModelState.IsValid)
             {
-                this.db.Entry(person.ToEntity()).State = EntityState.Modified;
-                await this.db.SaveChangesAsync();
+                this.DbContext.Entry(person.ToEntity()).State = EntityState.Modified;
+                await this.DbContext.SaveChangesAsync();
                 return this.RedirectToAction("Index");
             }
 
-            this.ViewBag.OrganizationId = new SelectList(this.db.Organizations, "Id", "Name", person.OrganizationId);
+            this.ViewBag.OrganizationId = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
             return this.View(person);
         }
 
@@ -103,7 +108,7 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Person person = await this.db.People.FindAsync(id);
+            Person person = await this.DbContext.People.FindAsync(id);
             if (person == null)
             {
                 return this.HttpNotFound();
@@ -118,9 +123,9 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Person person = await this.db.People.FindAsync(id);
-            this.db.People.Remove(person);
-            await this.db.SaveChangesAsync();
+            Person person = await this.DbContext.People.FindAsync(id);
+            this.DbContext.People.Remove(person);
+            await this.DbContext.SaveChangesAsync();
             return this.RedirectToAction("Index");
         }
 
@@ -128,7 +133,7 @@
         {
             if (disposing)
             {
-                this.db.Dispose();
+                this.DbContext.Dispose();
             }
 
             base.Dispose(disposing);
