@@ -1,9 +1,10 @@
 ﻿namespace BlackCatList.Web.Controllers
 {
+    using System.Data.Entity;
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-    using BlackCatList.Web.Models;
+    using Models;
 
     public class ImagesController : Controller
     {
@@ -32,6 +33,7 @@
         }
 
         // GET: Image/Delete/5
+        [Authorize(Roles = "Moderator,Administrator")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -46,6 +48,19 @@
             }
 
             this.DbContext.Images.Remove(entity);
+
+            var organization = await this.DbContext.Organizations.FirstOrDefaultAsync(x => x.ImageId == entity.Id);
+            if (organization != null)
+            {
+                organization.ImageId = null;
+            }
+
+            var person = await this.DbContext.People.FirstOrDefaultAsync(x => x.ImageId == entity.Id);
+            if (person != null)
+            {
+                person.ImageId = null;
+            }
+
             await this.DbContext.SaveChangesAsync();
 
             if (this.Request.UrlReferrer != null)

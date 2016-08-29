@@ -60,7 +60,16 @@
     {
         <tr>
             <td>
-                @Html.Partial("_Image", item)
+                @if (item.ImageId.HasValue)
+                {
+                    <a href="@Url.Action("Delete", "Images", new { id = item.ImageId })" title="Delete Image" onclick="return confirm('Confirm delete?')">
+                        @Html.Partial("_Image", item)
+                    </a>
+                }
+                else
+                {
+                    @Html.Partial("_Image", item)
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Organization)

@@ -106,6 +106,10 @@
                 var entity = await this.DbContext.People.FindAsync(person.Id);
 
                 await this.AddressMapper.MapAsync(person);
+                if (person.Photo != null && entity.Image != null)
+                {
+                    this.DbContext.Images.Remove(entity.Image);
+                }
 
                 this.DbContext.Entry(person.ToEntity(entity)).State = EntityState.Modified;
 

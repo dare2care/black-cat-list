@@ -118,6 +118,10 @@
                 }
 
                 await this.AddressMapper.MapAsync(organization);
+                if (organization.Image != null && entity.Image != null)
+                {
+                    this.DbContext.Images.Remove(entity.Image);
+                }
 
                 this.DbContext.Entry(organization.ToEntity(entity)).State = EntityState.Modified;
 
