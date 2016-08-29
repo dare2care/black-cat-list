@@ -319,6 +319,11 @@
     <None Include="Content\bootstrap\alerts.less" />
     <None Include="Scripts\bootstrap.js" />
     <None Include="Scripts\jquery-1.12.4.js" />
+    <Content Include="Scripts\form.bundle.js" />
+    <Content Include="Scripts\form.bundle.min.js">
+      <DependentUpon>form.bundle.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\jquery.preview.unobtrusive.js" />
     <None Include="Scripts\jquery.validate.js" />
     <None Include="Scripts\jquery.validate.unobtrusive.js" />
     <None Include="Scripts\jquery-ui.js" />
@@ -338,10 +343,6 @@
     </Content>
     <None Include="Scripts\modernizr-2.8.3.js" />
     <None Include="Scripts\respond.js" />
-    <Content Include="Scripts\validate.bundle.js" />
-    <Content Include="Scripts\validate.bundle.min.js">
-      <DependentUpon>validate.bundle.js</DependentUpon>
-    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

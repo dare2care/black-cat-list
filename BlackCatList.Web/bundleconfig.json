@@ -24,12 +24,13 @@
     }
   },
   {
-    "outputFileName": "Scripts/validate.bundle.js",
+    "outputFileName": "Scripts/form.bundle.js",
     "inputFiles": [
       "Scripts/jquery.validate.js",
       "Scripts/jquery.validate.unobtrusive.js",
-      "Scripts/jquery.autosize.js",
-      "Scripts/jquery.validate.extensions.js"
+      "Scripts/jquery.validate.extensions.js",
+      "Scripts/jquery.preview.unobtrusive.js",
+      "Scripts/jquery.autosize.js"
     ],
     "minify": {
       "enabled": true,
