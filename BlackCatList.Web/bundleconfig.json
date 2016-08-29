@@ -53,5 +53,18 @@
     "inputFiles": [
       "Content/jquery-ui.css"
     ]
+  },
+  {
+    "outputFileName": "Content/datatables.min.css",
+    "inputFiles": [
+      "Content/datatables.css"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/datatables.bundle.js",
+    "inputFiles": [
+      "Scripts/datatables.js",
+      "Scripts/datatables.unobtursive.js"
+    ]
   }
 ]

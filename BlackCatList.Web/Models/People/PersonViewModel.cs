@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Web;
-    using System.Web.Mvc;
 
     public class PersonViewModel : IAddressViewModel, IImageViewModel
     {
@@ -23,13 +22,6 @@
         public string Email { get; set; }
 
         public byte? Age { get; set; }
-
-        [Display(Name = "Organization")]
-        public int? OrganizationId { get; set; }
-
-        public SelectList Organizations { get; set; }
-
-        public string Organization { get; set; }
 
         public int? ImageId { get; set; }
 
@@ -52,12 +44,16 @@
 
         public int? StreetId { get; set; }
 
+        [Display(Name = "Created By")]
         public string CreatedBy { get; set; }
 
+        [Display(Name = "Modified By")]
         public string ModifiedBy { get; set; }
 
+        [Display(Name = "Created On")]
         public DateTime CreatedOn { get; set; }
 
+        [Display(Name = "Modified On")]
         public DateTime ModifiedOn { get; set; }
 
         public static PersonViewModel Create(Person person)
@@ -69,8 +65,6 @@
                 Phone = person.Phone,
                 Email = person.Email,
                 Age = person.Age,
-                OrganizationId = person.OrganizationId,
-                Organization = person.Organization?.Name,
                 ImageId = person.ImageId,
                 Comment = person.Comment,
                 Country = person.Country?.Name,
@@ -92,7 +86,6 @@
             entity.Phone = this.Phone;
             entity.Email = this.Email;
             entity.Age = this.Age;
-            entity.OrganizationId = this.OrganizationId;
             entity.CountryId = this.CountryId;
             entity.CityId = this.CityId;
             entity.StreetId = this.StreetId;

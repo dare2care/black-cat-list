@@ -24,8 +24,7 @@
         // GET: People
         public async Task<ActionResult> Index()
         {
-            var people = this.DbContext.People.Include(p => p.Image).Include(p => p.Organization);
-            return this.View((await people.ToListAsync()).Select(PersonViewModel.Create));
+            return this.View((await this.DbContext.People.ToListAsync()).Select(PersonViewModel.Create));
         }
 
         // GET: People/Details/5
@@ -48,10 +47,7 @@
         // GET: People/Create
         public ActionResult Create()
         {
-            return this.View(new PersonViewModel
-            {
-                Organizations = new SelectList(this.DbContext.Organizations, "Id", "Name")
-            });
+            return this.View();
         }
 
         // POST: People/Create
@@ -69,8 +65,6 @@
 
                 return this.RedirectToAction("Index");
             }
-
-            person.Organizations = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
 
             return this.View(person);
         }
@@ -90,8 +84,6 @@
             }
 
             var person = PersonViewModel.Create(entity);
-
-            person.Organizations = new SelectList(this.DbContext.Organizations, "Id", "Name", entity.OrganizationId);
 
             return this.View(person);
         }
@@ -118,8 +110,6 @@
                 return this.RedirectToAction("Index");
             }
 
-            person.Organizations = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
-
             return this.View(person);
         }
 
@@ -138,8 +128,6 @@
             }
 
             var person = PersonViewModel.Create(entity);
-
-            person.Organizations = new SelectList(this.DbContext.Organizations, "Id", "Name", person.OrganizationId);
 
             return this.View(person);
         }

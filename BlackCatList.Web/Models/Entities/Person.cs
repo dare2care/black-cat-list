@@ -2,7 +2,6 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Person : IIdentityEntity<int>, IAddressEntity, IMetadataEntity, IImageEntity
     {
@@ -24,10 +23,6 @@
         public byte? Age { get; set; }
 
         public int? ImageId { get; set; }
-
-        [Index]
-        [ForeignKey(nameof(Organization))]
-        public int? OrganizationId { get; set; }
 
         public int CountryId { get; set; }
 
@@ -57,7 +52,5 @@
         public virtual User ModifiedBy { get; set; }
 
         public virtual Image Image { get; set; }
-
-        public virtual Organization Organization { get; set; }
     }
 }

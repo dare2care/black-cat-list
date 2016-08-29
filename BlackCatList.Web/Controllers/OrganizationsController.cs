@@ -26,8 +26,7 @@
         [Authorize(Roles = "Administrator,Moderator")]
         public async Task<ActionResult> Index()
         {
-            var organizations = this.DbContext.Organizations.Include(o => o.City).Include(o => o.Country).Include(o => o.CreatedBy).Include(o => o.Image).Include(o => o.ModifiedBy).Include(o => o.Street);
-            return this.View((await organizations.ToListAsync()).Select(OrganizationsViewModel.Create));
+            return this.View((await this.DbContext.Organizations.ToListAsync()).Select(OrganizationsViewModel.Create));
         }
 
         // GET: Organizations/Details/5

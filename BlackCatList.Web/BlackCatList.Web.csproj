@@ -224,6 +224,10 @@
     <None Include="Content\bootstrap\bootstrap.css">
       <DependentUpon>bootstrap.less</DependentUpon>
     </None>
+    <Content Include="Content\datatables.css" />
+    <Content Include="Content\datatables.min.css">
+      <DependentUpon>datatables.css</DependentUpon>
+    </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <None Include="Content\layout.css">
       <DependentUpon>layout.less</DependentUpon>
@@ -320,7 +324,13 @@
     <None Include="Content\bootstrap\badges.less" />
     <None Include="Content\bootstrap\alerts.less" />
     <None Include="Scripts\bootstrap.js" />
+    <None Include="Scripts\datatables.unobtursive.js" />
     <None Include="Scripts\jquery-1.12.4.js" />
+    <None Include="Scripts\datatables.js" />
+    <Content Include="Scripts\datatables.bundle.js" />
+    <Content Include="Scripts\datatables.bundle.min.js">
+      <DependentUpon>datatables.bundle.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\form.bundle.js" />
     <Content Include="Scripts\form.bundle.min.js">
       <DependentUpon>form.bundle.js</DependentUpon>

@@ -19,18 +19,16 @@
         private ApplicationUserManager UserManager { get; }
 
         // GET: Users
-        public async Task<ActionResult> Index(UserListViewModel model)
+        public async Task<ActionResult> Index()
         {
-            var users = this.UserManager.Users.Select(x => new UserListViewModel
-            {
-                Id = x.Id,
-                Email = x.Email
-            });
-
-            if (model.Email != null)
-            {
-                users = users.Where(x => x.Email.Contains(model.Email));
-            }
+            var users = this.UserManager.Users
+                .Where(x => x.EmailConfirmed)
+                .Select(x => new UserListViewModel
+                {
+                    Id = x.Id,
+                    Email = x.Email,
+                    UserName = x.UserName
+                });
 
             return this.View(await users.ToListAsync());
         }
