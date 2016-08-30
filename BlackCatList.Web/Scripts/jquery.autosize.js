@@ -5,6 +5,8 @@
 
     $("textarea").on("input", function () {
         resize(this);
+    }).each(function () {
+        resize(this);
     });
 
     function resize(element) {

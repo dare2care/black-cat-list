@@ -1,118 +1,118 @@
 ﻿@model BlackCatList.Web.Models.People.PersonViewModel
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details for " + Model.Name;
 }
 
 <h2>Details</h2>
 
-<div>
-    <h4>Person</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Photo)
-        </dt>
+<div class="row">
+    <div class="col-sm-3">
+        <h1 id="image" class="hidden-xs">&nbsp;</h1>
+        <p class="visible-xs"></p>
+        @Html.Partial("_Image")
+    </div>
 
-        <dd>
-            @Html.Partial("_Image")
-        </dd>
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 id="title">
+                    @Model.Name @if (Model.CreatedBy == User.Identity.GetUserName() || User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                    {
+                        <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-default">Edit</a>
+                    }
+                </h1>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+        <div class="row">
+            <div class="col-md-12">
+                <i class="glyphicon glyphicon-map-marker"></i>
+                @if (Model.Street != null)
+                {
+                    <span>@Model.Street, </span>
+                }
+                @if (Model.City != null)
+                {
+                    <span>@Model.City, </span>
+                }
+                <span>@Model.Country</span>
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
+        <hr />
 
-        <dd>
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
+        <div class="row">
+            <div class="col-sm-6">
+                @if (Model.Age != null)
+                {
+                    <p title="Age">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        <span>@Model.Age years old</span>
+                    </p>
+                }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
+                @if (Model.Email != null)
+                {
+                    <p>
+                        <i class="glyphicon glyphicon-envelope"></i>
+                        <a href="mailto:@Model.Email" title="Send Email">
+                            @Model.Email
+                        </a>
+                    </p>
+                }
 
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+                @if (Model.Phone != null)
+                {
+                    <p title="Phone">
+                        <i class="glyphicon glyphicon-phone"></i>
+                        <a href="tel:@Model.Phone" title="Call">
+                            @Model.Phone
+                        </a>
+                    </p>
+                }
+            </div>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+            {
+                <div class="col-sm-6">
+                    <strong>Created By</strong>
+                    <p title="Created">
+                        <i class="glyphicon glyphicon-user"></i>
+                        <span>@Model.CreatedBy</span>
+                    </p>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
+                    <p title="Created On">
+                        <i class="glyphicon glyphicon-time"></i>
+                        <span>@Model.CreatedOn</span>
+                    </p>
 
-        <dd>
-            @Html.DisplayFor(model => model.Age)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Comment)
-        </dt>
+                    <strong>Modified By</strong>
+                    <p title="Modified">
+                        <i class="glyphicon glyphicon-user"></i>
+                        <span>@Model.ModifiedBy</span>
+                    </p>
 
-        <dd class="keep-line-breaks">@Html.DisplayFor(model => model.Comment)</dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Country)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Country)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Street)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Street)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedOn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ModifiedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ModifiedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ModifiedOn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ModifiedOn)
-        </dd>
-    </dl>
+                    <p title="Modified On">
+                        <i class="glyphicon glyphicon-time"></i>
+                        <span>@Model.ModifiedOn</span>
+                    </p>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12 keep-line-breaks">@Model.Comment</div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<div class="row">
+    <div class="col-sm-3">
+        <p>
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>
+
+    <div class="col-sm-9">
+
+    </div>
+</div>

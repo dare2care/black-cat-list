@@ -1,8 +1,12 @@
 ﻿@if (User.IsInRole("Administrator") && User.IsInRole("Moderator"))
 {
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Index", new { id = Model.Id })" class="btn btn-default">
+        Back to List
+    </a>
 }
 else
 {
-    @Html.ActionLink("Back to Home", "Index", "Home")
+    <a href="@Url.Action("Index", "Home", new { id = Model.Id })" class="btn btn-default">
+        Back to Home
+    </a>
 }

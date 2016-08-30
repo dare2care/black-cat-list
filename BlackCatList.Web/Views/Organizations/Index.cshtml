@@ -22,19 +22,19 @@
             <th></th>
             <th></th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Phone)
+                @Html.DisplayNameFor(model => model.Category)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.Phone)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Country)
@@ -46,7 +46,7 @@
                 @Html.DisplayNameFor(model => model.Street)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Image)
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedOn)
@@ -79,33 +79,9 @@
                     </div>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Category)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td title="@item.Description">
-                    <div class="keep-line-breaks">@Html.DisplayFor(modelItem => item.Description)</div>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Country)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.City)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Street)
-                </td>
-                <td>
                     @if (item.ImageId.HasValue)
-                {
-                        <a href="@Url.Action("Delete", "Images", new { id = item.ImageId })" title="Delete Image" onclick="return confirm('Confirm delete?')">
+                    {
+                        <a href="@Url.Action("Delete", "Images", new { id = item.ImageId })" title="Delete Image" onclick="return confirm('Confirm image delete?')">
                             @Html.Partial("_Image", item)
                         </a>
                     }
@@ -115,16 +91,44 @@
                     }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                    @item.Name
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                    @item.Category
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ModifiedOn)
+                    <a href="mailto:@item.Email" title="Send Email">
+                        @item.Email
+                    </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ModifiedBy)
+                    <a href="tel:@item.Phone" title="Call">
+                        @item.Phone
+                    </a>
+                </td>
+                <td>
+                    @item.Country
+                </td>
+                <td>
+                    @item.City
+                </td>
+                <td>
+                    @item.Street
+                </td>
+                <td title="@item.Description">
+                    <div class="keep-line-breaks">@item.Description</div>
+                </td>
+                <td>
+                    @item.CreatedOn
+                </td>
+                <td>
+                    @item.CreatedBy
+                </td>
+                <td>
+                    @item.ModifiedOn
+                </td>
+                <td>
+                    @item.ModifiedBy
                 </td>
             </tr>
         }

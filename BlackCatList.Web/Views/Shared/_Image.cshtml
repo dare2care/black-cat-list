@@ -1,10 +1,10 @@
 ﻿@model IImageViewModel
 
-@if (Model.ImageId.HasValue)
+@if (Model != null && Model.ImageId.HasValue)
 {
-    <img src="@Url.Action("Index", "Images", new { id = Model.ImageId })" class="responsive" alt="Image for @Model.Name" />
+    <img src="@Url.Action("Index", "Images", new { id = Model.ImageId })" class="img-responsive img-boxed" alt="Image for @Model.Name" />
 }
 else
 {
-    <img src="~/Content/image-not-found.png" class="responsive" alt="Image not found" />
+    <img src="~/Content/image-not-found.png" class="img-responsive img-boxed" alt="Image not found" />
 }

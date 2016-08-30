@@ -12,18 +12,22 @@
     white-space: normal;
 }
 
+.img-boxed {
+    box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.75);
+}
+
 input,
 select,
-textarea,
-img.responsive {
+textarea {
     max-width: 280px;
 }
 
-img.responsive {
-    box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.75);
-    margin: 1em 12px;
-    max-width: 256px;
-    max-height: 256px;
+form {
+    .img-responsive {
+        margin: 1em 12px;
+        max-width: 256px;
+        max-height: 256px;
+    }
 }
 
 .initializing {
@@ -34,16 +38,13 @@ img.responsive {
     text-align: center;
 }
 
-td img.responsive {
-    margin: 0;
+td .img-responsive {
     max-width: 128px;
     max-height: 128px;
 }
 
-dd, div {
-    .keep-line-breaks {
-        white-space: pre-wrap;
-    }
+.keep-line-breaks {
+    white-space: pre-wrap;
 }
 
 td > div.keep-line-breaks {
@@ -55,5 +56,5 @@ td > div.keep-line-breaks {
 
 td > div > a.btn {
     width: 100%;
-    margin: 0.15em;
+    margin: 0.3em;
 }

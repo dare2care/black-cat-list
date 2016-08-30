@@ -1,123 +1,121 @@
 ﻿@model BlackCatList.Web.Models.Organizations.OrganizationsViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details for " + Model.Name;
 }
 
-<h2>Details</h2>
+<div class="row">
+    <div class="col-sm-3">
+        <h1 id="image" class="hidden-xs">&nbsp;</h1>
+        <p class="visible-xs"></p>
+        @Html.Partial("_Image")
+    </div>
 
-<div>
-    <h4>Organization</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd>
-            @Html.Partial("_Image")
-        </dd>
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 id="title">
+                    @Model.Name @if (Model.CreatedBy == User.Identity.GetUserName() || User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                    {
+                        <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-default">Edit</a>
+                    }
+                </h1>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Category)
-        </dd>
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+        <div class="row">
+            <div class="col-md-12">
+                <span class="label label-primary">
+                    @Model.Category
+                </span>
+                &nbsp;
+                <i class="glyphicon glyphicon-map-marker"></i>
+                @if (Model.Street != null)
+                {
+                    <span>@Model.Street, </span>
+                }
+                @if (Model.City != null)
+                {
+                    <span>@Model.City, </span>
+                }
+                <span>@Model.Country</span>
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+        <hr />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
+        <div class="row">
+            <div class="col-sm-6">
+                <p>
+                    <span class="label label-success">61</span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                </p>
 
-        <dd>
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
+                @if (Model.Email != null)
+                {
+                    <p>
+                        <i class="glyphicon glyphicon-envelope"></i>
+                        <a href="mailto:@Model.Email" title="Send Email">
+                            @Model.Email
+                        </a>
+                    </p>
+                }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
+                @if (Model.Phone != null)
+                {
+                    <p title="Phone">
+                        <i class="glyphicon glyphicon-phone"></i>
+                        <a href="tel:@Model.Phone" title="Call">
+                            @Model.Phone
+                        </a>
+                    </p>
+                }
+            </div>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+            {
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <strong>Created By</strong>
+                        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+                        <div class="col-sm-8">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <span>@Model.CreatedBy</span>
+                            <br />
+                            <i class="glyphicon glyphicon-time"></i>
+                            <span>@Model.CreatedOn</span>
+                        </div>
+                    </div>
+                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <strong>Modified By</strong>
+                        </div>
 
-        <dd class="keep-line-breaks">@Html.DisplayFor(model => model.Description)</dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Country)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Country)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Street)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Street)
-        </dd>
-
-        @if (User.IsInRole("Administrator") && User.IsInRole("Moderator"))
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.CreatedBy)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.CreatedOn)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.ModifiedBy)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.ModifiedBy)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.ModifiedOn)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.ModifiedOn)
-            </dd>
-        }
-    </dl>
+                        <div class="col-sm-8">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <span>@Model.ModifiedBy</span>
+                            <br />
+                            <i class="glyphicon glyphicon-time"></i>
+                            <span>@Model.ModifiedOn</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <p class="col-md-12 keep-line-breaks">@Model.Description</p>
+        </div>
+    </div>
 </div>
 <p>
-    @if (Model.CreatedBy == User.Identity.GetUserName() || User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-    {
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @:|
-    }
     @Html.Partial("_BackLink")
 </p>
