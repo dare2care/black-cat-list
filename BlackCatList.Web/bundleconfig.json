@@ -30,7 +30,7 @@
       "Scripts/jquery.validate.unobtrusive.js",
       "Scripts/jquery.validate.extensions.js",
       "Scripts/jquery.preview.unobtrusive.js",
-      "Scripts/jquery.autosize.js"
+      "Scripts/jquery.autosize.unobtrusive.js"
     ],
     "minify": {
       "enabled": true,

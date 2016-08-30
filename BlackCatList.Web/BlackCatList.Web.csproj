@@ -347,7 +347,7 @@
       <DependentUpon>jquery-ui.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery.autocomplete.unobtrusive.js" />
-    <Content Include="Scripts\jquery.autosize.js" />
+    <Content Include="Scripts\jquery.autosize.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.extensions.js" />
     <Content Include="Scripts\layout.bundle.js" />
     <Content Include="Scripts\layout.bundle.min.js">
