@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
 
@@ -34,6 +35,7 @@
         public string Street { get; set; }
 
         [Required]
+        [MaxLength(10000)]
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
@@ -43,14 +45,20 @@
 
         public int? StreetId { get; set; }
 
+        public double Rating { get; set; }
+
+        public int ReviewsCount { get; set; }
+
+        public ICollection<ReviewViewModel> Reviews { get; set; }
+
         [Display(Name = "Created By")]
         public string CreatedBy { get; set; }
 
-        [Display(Name = "Modified By")]
-        public string ModifiedBy { get; set; }
-
         [Display(Name = "Created On")]
         public DateTime CreatedOn { get; set; }
+
+        [Display(Name = "Modified By")]
+        public string ModifiedBy { get; set; }
 
         [Display(Name = "Modified On")]
         public DateTime ModifiedOn { get; set; }
@@ -81,7 +89,10 @@
                 CreatedBy = organization.CreatedBy.UserName,
                 CreatedOn = organization.CreatedOn,
                 ModifiedBy = organization.ModifiedBy.UserName,
-                ModifiedOn = organization.ModifiedOn
+                ModifiedOn = organization.ModifiedOn,
+                ReviewsCount = organization.Reviews.Count,
+                Rating = organization.Reviews.Select(x => (double)x.Rating).DefaultIfEmpty().Average(),
+                Reviews = organization.Reviews.Select(ReviewViewModel.Create).ToList()
             };
         }
 

@@ -4,26 +4,25 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Street : IIdentityEntity<int>, ICreatedEntity
+    public class OrganizationReview : IIdentityEntity<int>, ICreatedEntity
     {
         [Key]
         public int Id { get; set; }
 
         [Index]
-        [Required]
-        [MaxLength(200)]
-        public string Name { get; set; }
+        [ForeignKey(nameof(Organization))]
+        public int OrganizationId { get; set; }
 
-        [Index]
-        [Required]
-        [ForeignKey(nameof(City))]
-        public int CityId { get; set; }
+        [Range(1, 5)]
+        public byte Rating { get; set; }
+
+        public string Comment { get; set; }
 
         public string CreatedById { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
-        public virtual City City { get; set; }
+        public virtual Organization Organization { get; set; }
 
         public virtual User CreatedBy { get; set; }
     }

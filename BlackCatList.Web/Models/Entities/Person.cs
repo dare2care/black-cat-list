@@ -2,14 +2,16 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Person : IIdentityEntity<int>, IAddressEntity, IMetadataEntity, IImageEntity
+    public class Person : IIdentityEntity<int>, IAddressEntity, IModifiedEntity, IImageEntity
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
         [MaxLength(100)]
+        [Index]
         public string Name { get; set; }
 
         [Phone]

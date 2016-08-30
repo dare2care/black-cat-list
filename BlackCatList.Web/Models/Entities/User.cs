@@ -1,18 +1,15 @@
 ﻿namespace BlackCatList.Web.Models
 {
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    public class User : IdentityUser, IIdentityEntity<string>
+    public class User : IdentityUser, IIdentityEntity<string>, IImageEntity
     {
-        [Index]
-        [ForeignKey(nameof(Organization))]
-        public int? OrganizationId { get; set; }
+        public int? ImageId { get; set; }
 
-        public virtual Organization Organization { get; set; }
+        public Image Image { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {

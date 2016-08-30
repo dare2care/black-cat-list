@@ -172,6 +172,8 @@
     <Compile Include="Contracts\IIdentityEntity.cs" />
     <Compile Include="Contracts\IImageEntity.cs" />
     <Compile Include="Contracts\IImageViewModel.cs" />
+    <Compile Include="Contracts\ICreatedEntity.cs" />
+    <Compile Include="Contracts\IModifiedEntity.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -193,8 +195,8 @@
     <Compile Include="Models\Entities\Category.cs" />
     <Compile Include="Models\Entities\Country.cs" />
     <Compile Include="Models\Entities\Image.cs" />
-    <Compile Include="Contracts\IMetadataEntity.cs" />
     <Compile Include="Models\Entities\Organization.cs" />
+    <Compile Include="Models\Entities\OrganizationReview.cs" />
     <Compile Include="Models\Entities\Street.cs" />
     <Compile Include="Models\Manage\ChangePasswordViewModel.cs" />
     <Compile Include="Models\Manage\ConfigureTwoFactorViewModel.cs" />
@@ -207,6 +209,7 @@
     <Compile Include="Models\Entities\City.cs" />
     <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\Organizations\OrganizationsViewModel.cs" />
+    <Compile Include="Models\Organizations\ReviewViewModel.cs" />
     <Compile Include="Models\People\PersonViewModel.cs" />
     <Compile Include="Models\Results\ChallengeResult.cs" />
     <Compile Include="Models\Shared\AddressMapper.cs" />

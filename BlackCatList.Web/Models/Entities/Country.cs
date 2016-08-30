@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Country : IIdentityEntity<int>
     {
@@ -10,6 +11,7 @@
 
         [Required]
         [MaxLength(100)]
+        [Index(IsUnique = true)]
         public string Name { get; set; }
 
         public virtual ICollection<Person> People { get; set; }

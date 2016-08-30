@@ -1,14 +1,16 @@
 ﻿namespace BlackCatList.Web.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Organization : IIdentityEntity<int>, IAddressEntity, IMetadataEntity, IImageEntity
+    public class Organization : IIdentityEntity<int>, IAddressEntity, IModifiedEntity, IImageEntity
     {
         [Key]
         public int Id { get; set; }
 
+        [Index]
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
@@ -58,5 +60,7 @@
         public virtual Image Image { get; set; }
 
         public virtual Category Category { get; set; }
+
+        public virtual ICollection<OrganizationReview> Reviews { get; set; }
     }
 }
