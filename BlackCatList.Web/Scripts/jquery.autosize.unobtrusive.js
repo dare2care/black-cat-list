@@ -5,7 +5,7 @@
 
     $("textarea").on("input", function () {
         resize(this);
-    }).each(function () {
+    }).filter(":visible").each(function () {
         resize(this);
     });
 

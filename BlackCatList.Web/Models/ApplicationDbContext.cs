@@ -12,9 +12,10 @@
 
     public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext()
+        public ApplicationDbContext(HttpContextBase httpContext)
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            this.UserId = httpContext.User?.Identity.GetUserId();
         }
 
         public virtual DbSet<Person> People { get; set; }
@@ -29,6 +30,8 @@
 
         public virtual DbSet<Organization> Organizations { get; set; }
 
+        public virtual DbSet<OrganizationReview> OrganizationReviews { get; set; }
+
         public virtual DbSet<Category> Categories { get; set; }
 
         private IEnumerable<ICreatedEntity> AddedMetadataEntities =>
@@ -41,11 +44,7 @@
                 .Where(p => p.State == EntityState.Modified)
                 .Select(p => p.Entity);
 
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
+        private string UserId { get; }
 
         public override int SaveChanges()
         {
@@ -63,18 +62,17 @@
 
         private void UpdateMetadata()
         {
-            var userIdentity = HttpContext.Current?.User?.Identity;
             var utcNow = DateTime.UtcNow;
 
             foreach (var added in this.AddedMetadataEntities)
             {
-                added.CreatedById = userIdentity.GetUserId();
+                added.CreatedById = this.UserId;
                 added.CreatedOn = utcNow;
 
                 var modified = added as IModifiedEntity;
                 if (modified != null)
                 {
-                    modified.ModifiedById = userIdentity.GetUserId();
+                    modified.ModifiedById = this.UserId;
                     modified.ModifiedOn = utcNow;
                 }
             }
@@ -84,7 +82,7 @@
                 this.Entry(modified).Property(x => x.CreatedOn).IsModified = false;
                 this.Entry(modified).Property(x => x.CreatedById).IsModified = false;
 
-                modified.ModifiedById = userIdentity.GetUserId();
+                modified.ModifiedById = this.UserId;
                 modified.ModifiedOn = utcNow;
             }
         }

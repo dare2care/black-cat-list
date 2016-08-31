@@ -3,11 +3,13 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class ReviewViewModel
+    public class ReviewViewModel : IImageViewModel
     {
         public int Id { get; set; }
 
-        public int? AvatarId { get; set; }
+        public int OrganizationId { get; set; }
+
+        public int? ImageId { get; set; }
 
         [Range(1, 5)]
         public byte Rating { get; set; }
@@ -17,6 +19,8 @@
 
         [Display(Name = "Created By")]
         public string CreatedBy { get; set; }
+
+        public string Name => this.CreatedBy;
 
         [Display(Name = "Created On")]
         public DateTime CreatedOn { get; set; }
@@ -28,7 +32,8 @@
                 Id = review.Id,
                 Rating = review.Rating,
                 Comment = review.Comment,
-                AvatarId = review.CreatedBy.ImageId,
+                OrganizationId = review.OrganizationId,
+                ImageId = review.CreatedBy.ImageId,
                 CreatedBy = review.CreatedBy.UserName,
                 CreatedOn = review.CreatedOn
             };
@@ -38,9 +43,9 @@
         {
             entity = entity ?? new OrganizationReview();
 
-            entity.Id = this.Id;
             entity.Rating = this.Rating;
             entity.Comment = this.Comment;
+            entity.OrganizationId = this.OrganizationId;
 
             return entity;
         }

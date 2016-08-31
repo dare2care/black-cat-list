@@ -30,11 +30,11 @@
                 <i class="glyphicon glyphicon-map-marker"></i>
                 @if (Model.Street != null)
                 {
-                    <span>@Model.Street, </span>
+                    <span>@Model.Street &laquo;</span>
                 }
                 @if (Model.City != null)
                 {
-                    <span>@Model.City, </span>
+                    <span>@Model.City &laquo;</span>
                 }
                 <span>@Model.Country</span>
             </div>
@@ -72,31 +72,40 @@
                     </p>
                 }
             </div>
+
             @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
             {
                 <div class="col-sm-6">
-                    <strong>Created By</strong>
-                    <p title="Created">
-                        <i class="glyphicon glyphicon-user"></i>
-                        <span>@Model.CreatedBy</span>
-                    </p>
+                    <div class="row">
+                        <div class="col-sm-5 col-md-4">
+                            <strong>Created By</strong>
+                        </div>
 
-                    <p title="Created On">
-                        <i class="glyphicon glyphicon-time"></i>
-                        <span>@Model.CreatedOn</span>
-                    </p>
+                        <div class="col-sm-7 col-md-8">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <span>@Model.CreatedBy</span>
+                            <br />
+                            <i class="glyphicon glyphicon-time"></i>
+                            <span>@Model.CreatedOn</span>
+                        </div>
+                    </div>
 
+                    @if (Model.CreatedBy != Model.ModifiedBy || Model.CreatedOn != Model.ModifiedOn)
+                    {
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4">
+                                <strong>Modified By</strong>
+                            </div>
 
-                    <strong>Modified By</strong>
-                    <p title="Modified">
-                        <i class="glyphicon glyphicon-user"></i>
-                        <span>@Model.ModifiedBy</span>
-                    </p>
-
-                    <p title="Modified On">
-                        <i class="glyphicon glyphicon-time"></i>
-                        <span>@Model.ModifiedOn</span>
-                    </p>
+                            <div class="col-sm-7 col-md-8">
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span>@Model.ModifiedBy</span>
+                                <br />
+                                <i class="glyphicon glyphicon-time"></i>
+                                <span>@Model.ModifiedOn</span>
+                            </div>
+                        </div>
+                    }
                 </div>
             }
         </div>
@@ -105,14 +114,9 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-3">
-        <p>
-            @Html.ActionLink("Back to List", "Index")
-        </p>
-    </div>
-
-    <div class="col-sm-9">
-
-    </div>
-</div>
+<hr />
+<p>
+    <a href="@Url.Action("Index")" class="btn btn-default">
+        Back to List
+    </a>
+</p>

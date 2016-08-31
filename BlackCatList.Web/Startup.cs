@@ -1,10 +1,11 @@
 ﻿namespace BlackCatList.Web
 {
+    using System.Data.Entity;
     using System.Web.Mvc;
     using Autofac;
     using Autofac.Integration.Mvc;
-    using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;
+    using Microsoft.Owin.Security.DataProtection;
     using Models;
     using Owin;
 
@@ -27,16 +28,17 @@
 
             builder.RegisterModule<AutofacWebTypesModule>();
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
-
             builder.Register(x => x.Resolve<IOwinContext>().Authentication).InstancePerRequest();
-            builder.Register(x => x.Resolve<IOwinContext>().Get<ApplicationDbContext>()).InstancePerRequest();
-            builder.Register(x => x.Resolve<IOwinContext>().Get<ApplicationUserManager>()).InstancePerRequest();
-            builder.Register(x => x.Resolve<IOwinContext>().Get<ApplicationSignInManager>()).InstancePerRequest();
-
+            builder.Register(x => new DpapiDataProtectionProvider(this.GetType().Namespace))
+                .As<IDataProtectionProvider>().SingleInstance();
+            builder.RegisterType<ApplicationDbContext>().InstancePerRequest();
+            builder.RegisterType<ApplicationUserManager>().InstancePerRequest();
+            builder.RegisterType<ApplicationSignInManager>().InstancePerRequest();
             builder.RegisterType<AddressMapper>().InstancePerRequest();
 
             var container = builder.Build();
 
+            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbContextInitializer());
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 
             return container;

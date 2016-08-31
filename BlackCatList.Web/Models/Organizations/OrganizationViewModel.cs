@@ -7,7 +7,7 @@
     using System.Web;
     using System.Web.Mvc;
 
-    public class OrganizationsViewModel : IAddressViewModel, IImageViewModel
+    public class OrganizationViewModel : IAddressViewModel, IImageViewModel
     {
         public int Id { get; set; }
 
@@ -71,9 +71,9 @@
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
-        public static OrganizationsViewModel Create(Organization organization)
+        public static OrganizationViewModel Create(Organization organization)
         {
-            return new OrganizationsViewModel
+            return new OrganizationViewModel
             {
                 Id = organization.Id,
                 Name = organization.Name,

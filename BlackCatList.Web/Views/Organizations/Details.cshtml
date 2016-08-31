@@ -1,4 +1,4 @@
-﻿@model BlackCatList.Web.Models.Organizations.OrganizationsViewModel
+﻿@model BlackCatList.Web.Models.Organizations.OrganizationViewModel
 
 @{
     ViewBag.Title = "Details for " + Model.Name;
@@ -33,18 +33,16 @@
                 <i class="glyphicon glyphicon-map-marker"></i>
                 @if (Model.Street != null)
                 {
-                    <span>@Model.Street, </span>
+                    <span>@Model.Street &laquo;</span>
                 }
                 @if (Model.City != null)
                 {
-                    <span>@Model.City, </span>
+                    <span>@Model.City &laquo;</span>
                 }
                 <span>@Model.Country</span>
             </div>
         </div>
-
         <hr />
-
         <div class="row">
             <div class="col-sm-6">
                 <p>
@@ -83,16 +81,15 @@
                         </a>
                     </p>
                 }
-            </div>
-            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+            </div>@if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
             {
                 <div class="col-sm-6">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-5 col-md-4">
                             <strong>Created By</strong>
                         </div>
 
-                        <div class="col-sm-8">
+                        <div class="col-sm-7 col-md-8">
                             <i class="glyphicon glyphicon-user"></i>
                             <span>@Model.CreatedBy</span>
                             <br />
@@ -100,22 +97,23 @@
                             <span>@Model.CreatedOn</span>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <strong>Modified By</strong>
-                        </div>
+                    @if (Model.CreatedBy != Model.ModifiedBy || Model.CreatedOn != Model.ModifiedOn)
+                    {
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4">
+                                <strong>Modified By</strong>
+                            </div>
 
-                        <div class="col-sm-8">
-                            <i class="glyphicon glyphicon-user"></i>
-                            <span>@Model.ModifiedBy</span>
-                            <br />
-                            <i class="glyphicon glyphicon-time"></i>
-                            <span>@Model.ModifiedOn</span>
+                            <div class="col-sm-7 col-md-8">
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span>@Model.ModifiedBy</span>
+                                <br />
+                                <i class="glyphicon glyphicon-time"></i>
+                                <span>@Model.ModifiedOn</span>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             }
         </div>
@@ -124,6 +122,43 @@
         </div>
     </div>
 </div>
-<p>
-    @Html.Partial("_BackLink")
-</p>
+<hr />
+<div class="row">
+    <div class="col-sm-3">
+        @Html.Partial("_BackLink")
+    </div>
+
+    <div class="col-sm-9">
+        @Html.Partial("_ReviewForm", new BlackCatList.Web.Models.Organizations.ReviewViewModel
+   {
+       OrganizationId = Model.Id
+   })
+
+        @foreach (var item in Model.Reviews)
+        {
+
+            <div class="media">
+                <div class="media-left">
+                    @Html.Partial("_Image", item)
+                </div>
+                <div class="media-body">
+                    <p>
+                        <span class="label label-@(item.Rating >= 4 ? "success" : item.Rating >= 3 ? "warning" : "danger")">
+                            <span class="glyphicon glyphicon-star"></span>
+                            @item.Rating / 5
+                        </span>
+                    </p>
+                    <p>
+                        <i class="glyphicon glyphicon-user"></i>
+                        <span>&nbsp; @item.CreatedBy</span>
+                    </p>
+                    <p>@item.Comment</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/form.bundle.js"></script>
+}

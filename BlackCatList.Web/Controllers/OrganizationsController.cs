@@ -5,12 +5,11 @@
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-    using Microsoft.AspNet.Identity;
     using Models;
     using Models.Organizations;
 
     [Authorize]
-    public class OrganizationsController : Controller
+    public class OrganizationsController : SharedController
     {
         public OrganizationsController(ApplicationDbContext dbContext, AddressMapper addressMapper)
         {
@@ -26,10 +25,11 @@
         [Authorize(Roles = "Administrator,Moderator")]
         public async Task<ActionResult> Index()
         {
-            return this.View((await this.DbContext.Organizations.ToListAsync()).Select(OrganizationsViewModel.Create));
+            return this.View((await this.DbContext.Organizations.ToListAsync()).Select(OrganizationViewModel.Create));
         }
 
         // GET: Organizations/Details/5
+        [AllowAnonymous]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,13 +43,29 @@
                 return this.HttpNotFound();
             }
 
-            return this.View(OrganizationsViewModel.Create(entity));
+            return this.View(OrganizationViewModel.Create(entity));
+        }
+
+        // GET: Organizations/Details/5
+        public async Task<ActionResult> Review(int? id)
+        {
+            var detailsResult = await this.Details(id);
+
+            var detailsViewResult = detailsResult as ViewResult;
+            if (detailsViewResult != null)
+            {
+                detailsViewResult.ViewName = nameof(this.Details);
+
+                this.ViewBag.ExpandReview = true;
+            }
+
+            return detailsResult;
         }
 
         // GET: Organizations/Create
         public ActionResult Create()
         {
-            return this.View(new OrganizationsViewModel
+            return this.View(new OrganizationViewModel
             {
                 Categories = new SelectList(this.DbContext.Categories, "Id", "Name")
             });
@@ -58,7 +74,7 @@
         // POST: Organizations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(OrganizationsViewModel organization)
+        public async Task<ActionResult> Create(OrganizationViewModel organization)
         {
             if (this.ModelState.IsValid)
             {
@@ -96,7 +112,7 @@
                 return new HttpUnauthorizedResult();
             }
 
-            var organization = OrganizationsViewModel.Create(entity);
+            var organization = OrganizationViewModel.Create(entity);
 
             organization.Categories = new SelectList(this.DbContext.Categories, "Id", "Name", organization.CategoryId);
 
@@ -106,7 +122,7 @@
         // POST: Organizations/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(OrganizationsViewModel organization)
+        public async Task<ActionResult> Edit(OrganizationViewModel organization)
         {
             if (this.ModelState.IsValid)
             {
@@ -123,7 +139,6 @@
                 }
 
                 this.DbContext.Entry(organization.ToEntity(entity)).State = EntityState.Modified;
-
                 await this.DbContext.SaveChangesAsync();
 
                 return this.RedirectToAuthorizedAction(organization.Id);
@@ -149,7 +164,7 @@
                 return this.HttpNotFound();
             }
 
-            return this.View(OrganizationsViewModel.Create(entity));
+            return this.View(OrganizationViewModel.Create(entity));
         }
 
         // POST: Organizations/Delete/5
@@ -187,7 +202,7 @@
 
         private bool IsNotAuthorizedCreator(Organization entity)
         {
-            return this.IsUser() && entity.CreatedById != this.User.Identity.GetUserId();
+            return this.IsUser() && this.IsNotCreator(entity);
         }
 
         private bool IsUser()

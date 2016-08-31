@@ -6,7 +6,7 @@
     using System.Web.Mvc;
     using Models;
 
-    public class ImagesController : Controller
+    public class ImagesController : SharedController
     {
         public ImagesController(ApplicationDbContext dbContext)
         {
@@ -15,7 +15,7 @@
 
         public ApplicationDbContext DbContext { get; }
 
-        // GET: Image/5
+        // GET: Images/5
         public async Task<ActionResult> Index(int? id)
         {
             if (id == null)
@@ -32,7 +32,7 @@
             return this.File(entity.Content, entity.ContentType, entity.Name);
         }
 
-        // GET: Image/Delete/5
+        // GET: Images/Delete/5
         [Authorize(Roles = "Moderator,Administrator")]
         public async Task<ActionResult> Delete(int? id)
         {
@@ -63,12 +63,7 @@
 
             await this.DbContext.SaveChangesAsync();
 
-            if (this.Request.UrlReferrer != null)
-            {
-                return this.RedirectPermanent(this.Request.UrlReferrer.ToString());
-            }
-
-            return this.RedirectToActionPermanent("Index", "Home");
+            return this.RedirectToRefererPermanent();
         }
     }
 }

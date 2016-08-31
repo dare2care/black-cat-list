@@ -58,3 +58,51 @@ td > div > a.btn {
     width: 100%;
     margin: 0.3em;
 }
+
+.btn-toggle {
+    display: none;
+
+    &.collapsed {
+        display: inherit;
+    }
+}
+
+.rating {
+    float: left;
+
+    label {
+        margin: 0.1em;
+        font-size: 1.5em;
+        color: #ddd;
+        float: right;
+    }
+
+    input {
+        display: none;
+    }
+}
+
+.rating > input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label {
+    color: #FFD700;
+}
+/* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label {
+    color: lighten(#FFD700, 30%);
+}
+
+.media {
+    .img-responsive {
+        max-height: 64px;
+        max-width: 64px;
+    }
+
+    .img-boxed {
+        margin: 6px;
+    }
+}

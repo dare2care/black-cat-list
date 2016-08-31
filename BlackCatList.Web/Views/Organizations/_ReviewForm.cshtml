@@ -1,0 +1,54 @@
+﻿@model BlackCatList.Web.Models.Organizations.ReviewViewModel
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <a href="@Url.Action("Review", new { id = Model.OrganizationId })" class="btn btn-primary">
+        Add a review
+    </a>
+}
+else
+{
+    <button data-target="#review" class="btn btn-primary btn-toggle @(Convert.ToBoolean(ViewBag.ExpandReview) ? "" : "collapsed")" data-toggle="collapse">
+        Add a review
+    </button>
+
+    <div id="review" class="collapse @(Convert.ToBoolean(ViewBag.ExpandReview) ? "in" : "")">
+        <form action="@Url.Action("Save", "Reviews")" method="post">
+            @Html.HiddenFor(model => model.OrganizationId)
+            @RatingStars()
+            <div class="clearfix"></div>
+            <div class="form-group">
+                <br />
+                <textarea placeholder="Leave a review comment (Optional)" name="@Html.NameFor(model => model.Comment)" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">
+                    Save
+                </button>
+                <button type="reset" class="btn btn-default" data-toggle="collapse" data-target="#review">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+}
+
+@helper RatingStars()
+{
+var titleFormats = new[]
+{
+    "Awesome - {0} stars",
+    "Pretty good - {0} stars",
+    "Average - {0} stars",
+    "Kinda bad - {0} stars",
+    "Sucks big time - {0} stars",
+};
+    <div class="rating">
+        @for (int i = 5; i > 0; i--)
+        {
+            <input type="radio" id="star-@i" name="@Html.NameFor(model => model.Rating)" value="@i" />
+            <label class="glyphicon glyphicon-star" for="star-@i" title="@string.Format(titleFormats[i - 1], i)">
+            </label>
+        }
+    </div>
+}

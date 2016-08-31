@@ -181,6 +181,8 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrganizationsController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
+    <Compile Include="Controllers\ReviewsController.cs" />
+    <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Models\Account\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="Models\Account\ExternalLoginListViewModel.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="Models\Account\SendCodeViewModel.cs" />
     <Compile Include="Models\Account\VerifyCodeViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\ApplicationDbContextInitializer.cs" />
     <Compile Include="Models\Entities\Category.cs" />
     <Compile Include="Models\Entities\Country.cs" />
     <Compile Include="Models\Entities\Image.cs" />
@@ -208,7 +211,7 @@
     <Compile Include="Models\Entities\Person.cs" />
     <Compile Include="Models\Entities\City.cs" />
     <Compile Include="Models\Entities\User.cs" />
-    <Compile Include="Models\Organizations\OrganizationsViewModel.cs" />
+    <Compile Include="Models\Organizations\OrganizationViewModel.cs" />
     <Compile Include="Models\Organizations\ReviewViewModel.cs" />
     <Compile Include="Models\People\PersonViewModel.cs" />
     <Compile Include="Models\Results\ChallengeResult.cs" />
@@ -406,6 +409,7 @@
     <Content Include="Views\Organizations\Index.cshtml" />
     <Content Include="Views\Organizations\_BackLink.cshtml" />
     <Content Include="Views\Shared\_Image.cshtml" />
+    <Content Include="Views\Organizations\_ReviewForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
