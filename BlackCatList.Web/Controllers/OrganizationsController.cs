@@ -5,6 +5,7 @@
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Mvc;
+    using Microsoft.AspNet.Identity;
     using Models;
     using Models.Organizations;
 
@@ -178,6 +179,27 @@
             this.DbContext.Organizations.Remove(entity);
             await this.DbContext.SaveChangesAsync();
             return this.RedirectToAuthorizedAction(id);
+        }
+
+        // POST: Reviews/Create
+        [HttpPost]
+        public async Task<ActionResult> SaveReview(ReviewViewModel review)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var userId = this.User.Identity.GetUserId();
+                var entity = await this.DbContext.OrganizationReviews
+                    .FirstOrDefaultAsync(x => x.CreatedById == userId);
+
+                this.DbContext.OrganizationReviews.Remove(entity);
+                this.DbContext.OrganizationReviews.Add(review.ToEntity());
+
+                await this.DbContext.SaveChangesAsync();
+
+                return this.RedirectToActionPermanent(nameof(this.Details), new { id = review.OrganizationId });
+            }
+
+            return await this.Review(review.OrganizationId);
         }
 
         protected override void Dispose(bool disposing)

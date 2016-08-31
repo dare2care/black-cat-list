@@ -92,7 +92,7 @@
                 ModifiedOn = organization.ModifiedOn,
                 ReviewsCount = organization.Reviews.Count,
                 Rating = organization.Reviews.Select(x => (double)x.Rating).DefaultIfEmpty().Average(),
-                Reviews = organization.Reviews.Select(ReviewViewModel.Create).ToList()
+                Reviews = organization.Reviews.OrderByDescending(x => x.CreatedOn).Select(ReviewViewModel.Create).ToList()
             };
         }
 

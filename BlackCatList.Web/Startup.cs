@@ -38,7 +38,7 @@
 
             var container = builder.Build();
 
-            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbContextInitializer());
+            Database.SetInitializer(new ApplicationDbContextInitializer());
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 
             return container;

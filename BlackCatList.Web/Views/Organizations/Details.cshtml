@@ -129,14 +129,11 @@
     </div>
 
     <div class="col-sm-9">
-        @Html.Partial("_ReviewForm", new BlackCatList.Web.Models.Organizations.ReviewViewModel
-   {
-       OrganizationId = Model.Id
-   })
+        @Html.Partial("_ReviewForm", new BlackCatList.Web.Models.Organizations.ReviewViewModel { OrganizationId = Model.Id })
 
         @foreach (var item in Model.Reviews)
         {
-
+            <hr />
             <div class="media">
                 <div class="media-left">
                     @Html.Partial("_Image", item)
@@ -147,12 +144,14 @@
                             <span class="glyphicon glyphicon-star"></span>
                             @item.Rating / 5
                         </span>
-                    </p>
-                    <p>
+                        &nbsp;
                         <i class="glyphicon glyphicon-user"></i>
-                        <span>&nbsp; @item.CreatedBy</span>
+                        <span>@item.CreatedBy</span>
+                        &nbsp;
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        <span>@item.CreatedOn.ToShortDateString()</span>
                     </p>
-                    <p>@item.Comment</p>
+                    <div class="keep-line-breaks" style="clear: left">@item.Comment</div>
                 </div>
             </div>
         }

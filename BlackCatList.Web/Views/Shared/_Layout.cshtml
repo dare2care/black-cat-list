@@ -21,16 +21,15 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    @if (User.IsInRole("Administrator"))
-                    {
-                        <li>@Html.ActionLink("Users", "Index", "Users")</li>
-                    }
-
                     @if (User.IsInRole("Moderator") || User.IsInRole("Administrator"))
                     {
                         <li>@Html.ActionLink("Organizations", "Index", "Organizations")</li>
                         <li>@Html.ActionLink("People", "Index", "People")</li>
+                    }
+
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li>@Html.ActionLink("Users", "Index", "Users")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

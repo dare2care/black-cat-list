@@ -11,6 +11,7 @@
 
         public int? ImageId { get; set; }
 
+        [Required]
         [Range(1, 5)]
         public byte Rating { get; set; }
 

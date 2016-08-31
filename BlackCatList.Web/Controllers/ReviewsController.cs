@@ -1,12 +1,9 @@
 ﻿namespace BlackCatList.Web.Controllers
 {
-    using System.Data.Entity;
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-    using Microsoft.AspNet.Identity;
     using Models;
-    using Models.Organizations;
 
     [Authorize]
     public class ReviewsController : SharedController
@@ -17,24 +14,6 @@
         }
 
         private ApplicationDbContext DbContext { get; }
-
-        // POST: Reviews/Create
-        [HttpPost]
-        public async Task<ActionResult> Save(ReviewViewModel review)
-        {
-            if (this.ModelState.IsValid)
-            {
-                var userId = this.User.Identity.GetUserId();
-                var entity = await this.DbContext.OrganizationReviews
-                    .FirstOrDefaultAsync(x => x.CreatedById == userId);
-
-                this.DbContext.Entry(review.ToEntity(entity)).State = EntityState.Modified;
-
-                await this.DbContext.SaveChangesAsync();
-            }
-
-            return this.RedirectToActionPermanent("Details", "Organizations", new { id = review.OrganizationId });
-        }
 
         // POST: Reviews/Delete/5
         [HttpPost]
