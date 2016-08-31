@@ -201,6 +201,8 @@
     <Compile Include="Models\Entities\Organization.cs" />
     <Compile Include="Models\Entities\OrganizationReview.cs" />
     <Compile Include="Models\Entities\Street.cs" />
+    <Compile Include="Models\Home\HomeOrganizationViewModel.cs" />
+    <Compile Include="Models\Home\HomeViewModel.cs" />
     <Compile Include="Models\Manage\ChangePasswordViewModel.cs" />
     <Compile Include="Models\Manage\ConfigureTwoFactorViewModel.cs" />
     <Compile Include="Models\Manage\FactorViewModel.cs" />

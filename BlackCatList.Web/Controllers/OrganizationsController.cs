@@ -189,9 +189,14 @@
             {
                 var userId = this.User.Identity.GetUserId();
                 var entity = await this.DbContext.OrganizationReviews
+                    .Where(x => x.OrganizationId == review.OrganizationId)
                     .FirstOrDefaultAsync(x => x.CreatedById == userId);
 
-                this.DbContext.OrganizationReviews.Remove(entity);
+                if (entity != null)
+                {
+                    this.DbContext.OrganizationReviews.Remove(entity);
+                }
+
                 this.DbContext.OrganizationReviews.Add(review.ToEntity());
 
                 await this.DbContext.SaveChangesAsync();

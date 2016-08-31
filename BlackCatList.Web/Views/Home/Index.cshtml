@@ -1,24 +1,41 @@
-﻿@{
+﻿@model BlackCatList.Web.Models.Home.HomeViewModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
 <div class="jumbotron">
     <h1>Black Cat List</h1>
-    <p class="lead">Aliquam erat volutpat. Aliquam accumsan lacus ut sapien tincidunt, eu pellentesque lectus tincidunt. Nunc quis mi turpis.</p>
+    <p class="lead">A website dedicated to providing useful information to per owners.</p>
+    <p>You can create records of animal organizations so that others can see and rate them.</p>
     <p><a href="@Url.Action("Create", "Organizations")" class="btn btn-primary btn-lg">Add entry &raquo;</a></p>
 </div>
 
+<h2>Top organizations</h2>
+
 <div class="row">
-    <div class="col-md-4">
-        <h2>Lorem ipsum dolor</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus velit nulla, pulvinar at diam eget, semper ultricies purus. Vivamus pellentesque purus eu lacinia pulvinar. Ut imperdiet lectus quis massa rutrum, sit amet volutpat nunc ultricies. Sed feugiat eget tellus sit amet accumsan. Morbi aliquet nisl pellentesque rhoncus hendrerit. Nulla facilisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus tincidunt sem ipsum.</p>
-    </div>
-    <div class="col-md-4">
-        <h2>Suspendisse hendrerit</h2>
-        <p>Suspendisse hendrerit nisi mollis velit sagittis, faucibus scelerisque dolor sagittis. Aliquam sed mauris sed metus fermentum aliquet. Nulla nibh orci, porttitor eu est at, sodales ornare turpis. Duis lacinia ante non urna convallis, sed euismod justo congue. Nunc tempor et nunc sit amet feugiat. Nam at hendrerit neque. Pellentesque turpis est, hendrerit eu risus nec, viverra faucibus orci. Sed semper non felis id eleifend. Integer mattis bibendum arcu vel condimentum. Nulla rhoncus vitae quam sit amet scelerisque. Vestibulum feugiat sagittis semper. Fusce eu risus sagittis, euismod mi eget, scelerisque ipsum. Praesent tempor turpis et justo rhoncus, vitae consectetur enim accumsan. Nullam ut ipsum efficitur, fringilla nibh venenatis, pharetra mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor velit neque, quis luctus massa efficitur a.</p>
-    </div>
-    <div class="col-md-4">
-        <h2>Aenean id purus lacinia</h2>
-        <p>Aenean id purus lacinia, varius dui vel, laoreet nisl. Pellentesque convallis a nunc in vestibulum. Quisque vel risus id massa finibus aliquet. Integer vestibulum enim quis eleifend aliquam. Mauris eleifend a enim et dictum. Aliquam erat volutpat. Suspendisse et finibus turpis, at hendrerit massa. Praesent vel purus id ante efficitur vulputate non iaculis nisi. Aliquam sed nunc venenatis ligula lobortis commodo sed ut lectus. Phasellus tempor sem sit amet posuere ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non felis ultricies, ornare erat in, porta odio. Curabitur scelerisque eleifend mi, eget porttitor nulla blandit non.</p>
-    </div>
+    @foreach (var item in Model.Organizations)
+    {
+        <div class="col-xs-6 col-md-3">
+            <a href="@Url.Action("Details", "Organizations", new { id = item.Id })" class="thumbnail">
+                @Html.Partial("_Image", item)
+                <div class="caption">
+                    <h3>@item.Name</h3>
+                    <h4>@item.Category</h4>
+                    <p>
+                        <span class="label label-@(item.Rating >= 3.5 ? "success" : item.Rating >= 2.5 ? "warning" : "danger")">
+                            <span class="glyphicon glyphicon-star"></span>
+                            @item.Rating / 5
+                        </span>
+                        &nbsp;
+                        @if (item.City != null)
+                        {
+                            <span>@item.City &laquo;</span>
+                        }
+                        <span>@item.Country</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+    }
 </div>
