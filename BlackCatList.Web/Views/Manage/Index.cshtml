@@ -14,17 +14,17 @@
         <dd>
             @if (Model.HasPassword)
             {
-                @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn btn-primary btn-sm" })
+                @Html.ActionLink("Change your password", "ChangePassword")
             }
             else
             {
-                @Html.ActionLink("Create", "SetPassword", null, new { @class = "btn btn-primary btn-sm" })
+                @Html.ActionLink("Create", "SetPassword")
             }
         </dd>
         <dt>External Logins:</dt>
         <dd>
             @Model.Logins.Count
-            @Html.ActionLink("Manage", "ManageLogins", null, new { @class = "btn btn-primary btn-sm" })
+            @Html.ActionLink("Manage", "ManageLogins")
         </dd>
         <dt>Two-Factor Authentication:</dt>
         <dd>
@@ -34,7 +34,7 @@
                 {
                     @Html.AntiForgeryToken()
                     <text>Enabled
-                        <input type="submit" value="Disable" class="btn btn-primary btn-sm" />
+                        <input type="submit" value="Disable" class="btn btn-link" />
                     </text>
                 }
             }
@@ -44,7 +44,7 @@
                 {
                     @Html.AntiForgeryToken()
                     <text>Disabled
-                        <input type="submit" value="Enable" class="btn btn-warning btn-sm" />
+                        <input type="submit" value="Enable" class="btn btn-link" />
                     </text>
                 }
             }

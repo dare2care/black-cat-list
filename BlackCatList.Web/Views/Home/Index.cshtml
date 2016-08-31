@@ -25,7 +25,7 @@
                     <p>
                         <span class="label label-@(item.Rating >= 3.5 ? "success" : item.Rating >= 2.5 ? "warning" : "danger")">
                             <span class="glyphicon glyphicon-star"></span>
-                            @item.Rating / 5
+                            @item.Rating.ToString("0.#") / 5
                         </span>
                         &nbsp;
                         @if (item.City != null)

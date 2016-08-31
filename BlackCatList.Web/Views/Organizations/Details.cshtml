@@ -50,7 +50,7 @@
                     {
                         <span class="label label-@(Model.Rating >= 3.5 ? "success" : Model.Rating >= 2.5 ? "warning" : "danger")">
                             <span class="glyphicon glyphicon-star"></span>
-                            @Model.Rating / 5
+                            @Model.Rating.ToString("0.#") / 5
                         </span>
                         @: &nbsp;
                         <span>@Model.ReviewsCount review(s)</span>
