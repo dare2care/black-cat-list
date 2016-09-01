@@ -5,6 +5,9 @@
             $this.autocomplete({
                 autoFocus: true,
                 minLength: 0,
+                position: {
+                    collision: "flipfit"
+                },
                 source: function (request, response) {
                     var withId = $this.data("autocomplete-with");
                     if (withId != null) {

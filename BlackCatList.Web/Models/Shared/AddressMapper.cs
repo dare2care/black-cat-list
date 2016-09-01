@@ -32,7 +32,7 @@
             var entity = await this.DbContext.Countries.FirstOrDefaultAsync(x => x.Name == address.Country);
             if (entity == null)
             {
-                throw new ArgumentException($"Country does {address.Country} not exist.");
+                throw new ArgumentException($"Country '{address.Country}' does not exist.");
             }
 
             return address.CountryId = entity.Id;
